@@ -11,10 +11,12 @@ export default defineConfig({
     tailwindcss(),
   ],
   resolve: {
-    alias: {
+    alias: [
       // Alias @ to the src directory
-      '@': path.resolve(__dirname, './src'),
-    },
+      { find: '@', replacement: path.resolve(__dirname, './src') },
+      // Resolve Figma-exported asset imports to local files.
+      { find: /^figma:asset\//, replacement: `${path.resolve(__dirname, './src/assets')}/` },
+    ],
   },
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
