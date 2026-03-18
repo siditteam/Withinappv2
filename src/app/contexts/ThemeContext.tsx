@@ -27,12 +27,12 @@ const backgroundPreferredTheme: Record<BackgroundTheme, Theme | null> = {
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     const saved = localStorage.getItem("divedeep-theme");
-    return (saved as Theme) || "dark";
+    return (saved as Theme) || "light";
   });
 
   const [backgroundTheme, setBackgroundTheme] = useState<BackgroundTheme>(() => {
     const saved = localStorage.getItem("within-bg-theme");
-    return (saved as BackgroundTheme) || "star-trails";
+    return (saved as BackgroundTheme) || "light-rays";
   });
 
   const [practiceMode, setPracticeMode] = useState<PracticeMode>(() => {
