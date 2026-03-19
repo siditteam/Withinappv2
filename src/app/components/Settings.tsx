@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ArrowLeft, Moon, Sun, Check, Zap, SlidersHorizontal } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useTheme } from "../contexts/ThemeContext";
@@ -15,6 +16,8 @@ const backgroundOptions = [
 
 export default function Settings() {
   const navigate = useNavigate();
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  const bypassEnabled = localStorage.getItem("within-auth-bypass") === "1";
   const { theme, toggleTheme, backgroundTheme, setBackgroundTheme, practiceMode, setPracticeMode } = useTheme();
 
   const glassCard = glassCardClass(theme);
@@ -283,6 +286,39 @@ export default function Settings() {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Account Section */}
+        <div className="mt-8 mb-6 relative">
+          <h2 className={`mb-3 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+            Account
+          </h2>
+          <p className={`text-[14px] font-extralight tracking-[0.015em] mb-4 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+            {bypassEnabled ? "Bypass mode is active for testing." : "You are signed in with your account."}
+          </p>
+
+          <button
+            onClick={async () => {
+              if (isSigningOut) {
+                return;
+              }
+
+              setIsSigningOut(true);
+              try {
+                navigate("/logout", { replace: true });
+              } finally {
+                setIsSigningOut(false);
+              }
+            }}
+            disabled={isSigningOut}
+            className={`w-full rounded-[18px] p-3 text-[14px] transition-colors border ${
+              theme === "dark"
+                ? "border-white/15 bg-white/8 text-white/85 hover:bg-white/10"
+                : "border-gray-300 bg-white/60 text-gray-700 hover:bg-white"
+            } ${isSigningOut ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+            {isSigningOut ? "Signing Out..." : "Sign Out"}
+          </button>
         </div>
       </div>
     </div>

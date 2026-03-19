@@ -19,7 +19,7 @@ export default function Profile() {
     { icon: Bell, label: "Notifications", color: theme === "dark" ? "text-[#5B8A72]" : "text-[#4A5DB8]", action: () => {} },
     { icon: Settings, label: "Settings", color: theme === "dark" ? "text-gray-400" : "text-gray-600", action: () => navigate("/settings") },
     { icon: HelpCircle, label: "Help & Support", color: theme === "dark" ? "text-gray-400" : "text-gray-600", action: () => {} },
-    { icon: LogOut, label: "Log out", color: "text-red-400", action: () => {} },
+    { icon: LogOut, label: "Log out", color: "text-red-400", action: () => navigate("/logout") },
   ];
 
   return (

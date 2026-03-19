@@ -24,74 +24,101 @@ import SanghaSession from "./components/sangha/SanghaSession";
 import Learn from "./components/learn/Learn";
 import LearnSeriesDetail from "./components/learn/LearnSeriesDetail";
 import InnerCircle from "./components/innercircle/InnerCircle";
+import FeelingSlider from "./components/feeling/FeelingSlider";
+import LandingFeelingGate from "./components/feeling/LandingFeelingGate";
+import LoginPage from "./components/auth/LoginPage";
+import AuthCallback from "./components/auth/AuthCallback";
+import LogoutPage from "./components/auth/LogoutPage";
+import RequireAuth from "./components/auth/RequireAuth";
 
 export const router = createBrowserRouter([
   {
+    path: "/login",
+    Component: LoginPage,
+  },
+  {
+    path: "/auth/callback",
+    Component: AuthCallback,
+  },
+  {
+    path: "/logout",
+    Component: LogoutPage,
+  },
+  {
     path: "/",
-    Component: AppShell,
+    Component: RequireAuth,
     children: [
       {
-        Component: Root,
+        Component: AppShell,
         children: [
-          { index: true, Component: DailyPractice },
-          { path: "explore", Component: Explore },
-          { path: "explore/:id", loader: () => redirect("/explore") },
-          { path: "profile", Component: Profile },
+          {
+            Component: Root,
+            children: [
+              { index: true, Component: LandingFeelingGate },
+              { path: "explore", Component: Explore },
+              { path: "explore/:id", loader: () => redirect("/explore") },
+              { path: "profile", Component: Profile },
+            ],
+          },
+          {
+            path: "settings",
+            Component: Settings,
+          },
+          {
+            path: "feeling-checkin",
+            Component: FeelingSlider,
+          },
+          {
+            path: "inquiry",
+            children: [
+              { index: true, Component: InquiryList },
+              { path: ":id", Component: InquiryIntro },
+              { path: ":id/guidance", Component: InquiryGuidance },
+              { path: ":id/session", Component: InquirySession },
+              { path: ":id/complete", Component: InquiryComplete },
+              { path: ":id/trek-transition", Component: InquiryTrekTransition },
+            ],
+          },
+          {
+            path: "soul",
+            children: [
+              { index: true, Component: SoulPracticeList },
+              { path: ":id", Component: SoulPracticeDetail },
+              { path: ":id/session", Component: SoulPracticeSession },
+              { path: ":id/complete", Component: SoulPracticeComplete },
+            ],
+          },
+          {
+            path: "silence",
+            children: [
+              { index: true, Component: SilenceDetail },
+              { path: "session", Component: SilenceSession },
+              { path: "complete", Component: SilenceComplete },
+            ],
+          },
+          {
+            path: "library",
+            Component: Library,
+          },
+          {
+            path: "sangha",
+            children: [
+              { index: true, Component: SanghaSpace },
+              { path: "session", Component: SanghaSession },
+            ],
+          },
+          {
+            path: "learn",
+            children: [
+              { index: true, Component: Learn },
+              { path: ":id", Component: LearnSeriesDetail },
+            ],
+          },
+          {
+            path: "inner-circle",
+            Component: InnerCircle,
+          },
         ],
-      },
-      {
-        path: "settings",
-        Component: Settings,
-      },
-      {
-        path: "inquiry",
-        children: [
-          { index: true, Component: InquiryList },
-          { path: ":id", Component: InquiryIntro },
-          { path: ":id/guidance", Component: InquiryGuidance },
-          { path: ":id/session", Component: InquirySession },
-          { path: ":id/complete", Component: InquiryComplete },
-          { path: ":id/trek-transition", Component: InquiryTrekTransition },
-        ],
-      },
-      {
-        path: "soul",
-        children: [
-          { index: true, Component: SoulPracticeList },
-          { path: ":id", Component: SoulPracticeDetail },
-          { path: ":id/session", Component: SoulPracticeSession },
-          { path: ":id/complete", Component: SoulPracticeComplete },
-        ],
-      },
-      {
-        path: "silence",
-        children: [
-          { index: true, Component: SilenceDetail },
-          { path: "session", Component: SilenceSession },
-          { path: "complete", Component: SilenceComplete },
-        ],
-      },
-      {
-        path: "library",
-        Component: Library,
-      },
-      {
-        path: "sangha",
-        children: [
-          { index: true, Component: SanghaSpace },
-          { path: "session", Component: SanghaSession },
-        ],
-      },
-      {
-        path: "learn",
-        children: [
-          { index: true, Component: Learn },
-          { path: ":id", Component: LearnSeriesDetail },
-        ],
-      },
-      {
-        path: "inner-circle",
-        Component: InnerCircle,
       },
     ],
   },
