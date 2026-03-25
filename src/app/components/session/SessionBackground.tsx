@@ -5,7 +5,7 @@
  */
 
 import { motion } from "motion/react";
-import sessionBg from "figma:asset/f115501a0383d22b2637ed75f2f3745c8e696a35.png";
+import sessionBg from "../../../assets/Background Images/f115501a0383d22b2637ed75f2f3745c8e696a35.png";
 
 interface SessionBackgroundProps {
   /** Practice accent colour — tints the overlay gently */
