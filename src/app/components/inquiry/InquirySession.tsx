@@ -6,7 +6,9 @@ import { inquiries, inquiryGuidance } from "./inquiryData";
 import { BreathingOrb } from "../session/BreathingOrb";
 import { SessionBackground } from "../session/SessionBackground";
 import { ReturnTransition } from "../session/ReturnTransition";
+import { AmbientAudioControls } from "../session/AmbientAudioControls";
 import { glassFloat, btnGlass } from "../../utils/glassStyles";
+import { useBackgroundTrack } from "../../utils/useBackgroundTrack";
 
 type SessionPhase = "instruction" | "experience" | "closing";
 
@@ -25,6 +27,8 @@ export default function InquirySession() {
   const [guidanceOpen, setGuidanceOpen] = useState(false);
   const [exiting, setExiting] = useState(false);
   const exitingRef = useRef(false);
+
+  const ambientAudio = useBackgroundTrack(!isPaused && !exiting, { volume: 0.18 });
 
   // Transition from instruction to experience after 8 seconds
   useEffect(() => {
@@ -134,6 +138,26 @@ export default function InquirySession() {
           >
             <X className="w-4 h-4" />
           </motion.button>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {controlsVisible && !exiting && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.4 }}
+            className="absolute top-20 right-6 z-30"
+          >
+            <AmbientAudioControls
+              theme="dark"
+              isMuted={ambientAudio.isMuted}
+              onToggleMuted={ambientAudio.toggleMuted}
+              volume={ambientAudio.volume}
+              onVolumeChange={ambientAudio.setVolume}
+            />
+          </motion.div>
         )}
       </AnimatePresence>
 

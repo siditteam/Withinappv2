@@ -1,9 +1,20 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { BookOpen, Headphones, Lightbulb, Play, Users, GraduationCap, Shield } from "lucide-react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { Headphones, Lightbulb, Play, Shield, Users, GraduationCap } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
-import { glassCardClass, glassElevated, ctaBtnShadowClass } from "../utils/glassStyles";
+import { glassCardClass, glassElevated } from "../utils/glassStyles";
+import { seriesData } from "./learn/learnData";
+
+type ExploreAudioCard = {
+  id: string;
+  title: string;
+  subtitle: string;
+  reflection: string;
+  durationLabel: string;
+  accent: string;
+  glow: string;
+  typeLabel: string;
+};
 
 function useLiveCount() {
   const [count, setCount] = useState(12_347);
@@ -25,38 +36,55 @@ export default function Explore() {
   const glassCard = glassCardClass(theme);
   const elevatedCard = glassElevated(theme);
 
-  const writings = [
+  const audioTalks: ExploreAudioCard[] = [
     {
-      id: 1,
-      title: "The Nature of Awareness",
-      author: "Rupert Spira",
-      readTime: "8 min read",
-      excerpt: "Awareness is not an experience but that which knows all experience...",
-      image: "https://images.unsplash.com/photo-1625395694544-079d163b769b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwZXJzb24lMjBtZWRpdGF0aW5nJTIwc3Vuc2V0fGVufDF8fHx8MTc3MzE0OTEwOHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+      id: "talk-1",
+      title: "Understanding the Self",
+      subtitle: "Rupert Spira • Non-duality",
+      reflection: "Just notice what is aware of the one who is listening.",
+      durationLabel: "45 min",
+      accent: "#7A6F9B",
+      glow: "rgba(122,111,155,0.35)",
+      typeLabel: "Audio talk",
     },
     {
-      id: 2,
-      title: "Beyond the Seeking Mind",
-      author: "Adyashanti",
-      readTime: "6 min read",
-      excerpt: "The end of seeking is the beginning of finding what you already are...",
-      image: "https://images.unsplash.com/photo-1617844580965-4cb9f0ba3e6e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxuYXR1cmUlMjBmb3Jlc3QlMjBjYWxtfGVufDF8fHx8MTc3MzExMjI4Nnww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+      id: "talk-2",
+      title: "The Direct Path",
+      subtitle: "Greg Goode • Self-inquiry",
+      reflection: "A direct invitation to stop seeking and turn toward what is here.",
+      durationLabel: "38 min",
+      accent: "#3D5A80",
+      glow: "rgba(74,93,184,0.32)",
+      typeLabel: "Audio talk",
     },
     {
-      id: 3,
-      title: "The Primacy of Presence",
-      author: "Eckhart Tolle",
-      readTime: "10 min read",
-      excerpt: "Presence is the key to freedom from the prison of psychological time...",
-      image: "https://images.unsplash.com/photo-1628087234845-254f15abd82a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMHN1bnJpc2UlMjBtZWRpdGF0aW9ufGVufDF8fHx8MTc3MzE0OTExMHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-    }
+      id: "talk-3",
+      title: "Being Awareness",
+      subtitle: "Joan Tollifson • Present moment",
+      reflection: "There is nowhere to get to. Presence is the whole teaching.",
+      durationLabel: "52 min",
+      accent: "#5B8A72",
+      glow: "rgba(91,138,114,0.32)",
+      typeLabel: "Audio talk",
+    },
   ];
 
-  const audioTalks = [
-    { id: 1, title: "Understanding the Self", speaker: "Rupert Spira", duration: "45 min", topic: "Non-duality" },
-    { id: 2, title: "The Direct Path", speaker: "Greg Goode", duration: "38 min", topic: "Self-inquiry" },
-    { id: 3, title: "Being Awareness", speaker: "Joan Tollifson", duration: "52 min", topic: "Present moment" }
-  ];
+  const audioSeries: ExploreAudioCard[] = seriesData.slice(0, 3).map((series, index) => {
+    const firstEpisode = series.episodes[0];
+    const accentPalette = ["#7A6F9B", "#5B8A72", "#3D5A80"];
+    const glowPalette = ["rgba(122,111,155,0.34)", "rgba(91,138,114,0.32)", "rgba(74,93,184,0.32)"];
+
+    return {
+      id: `series-${series.id}`,
+      title: series.title,
+      subtitle: `${firstEpisode ? `Episode ${firstEpisode.id}` : "Series"} • ${series.depth}`,
+      reflection: firstEpisode?.subtitle ?? series.description,
+      durationLabel: `${series.episodes.length} episodes`,
+      accent: accentPalette[index % accentPalette.length],
+      glow: glowPalette[index % glowPalette.length],
+      typeLabel: "Audio series",
+    };
+  });
 
   const todaysPractice = {
     title: "Resting in Being",
@@ -70,11 +98,40 @@ export default function Explore() {
     readTime: "5 min"
   };
 
-  const glowColors = [
-    "rgba(74,93,184,0.18)",
-    "rgba(122,111,155,0.18)",
-    "rgba(91,138,114,0.18)",
-  ];
+  const renderAudioListItem = (item: ExploreAudioCard, onClick: () => void) => {
+    return (
+      <button
+        key={item.id}
+        onClick={onClick}
+        className={`w-full text-left rounded-[22px] p-4 flex items-center gap-4 transition-transform active:scale-[0.98] ${glassCard}`}
+      >
+        <div
+          className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+          style={{
+            background: `linear-gradient(135deg, ${item.accent} 0%, rgba(255,255,255,0.2) 100%)`,
+          }}
+        >
+          <Headphones className="w-5 h-5 text-white" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className={`${theme === "dark" ? "text-white" : "text-gray-900"}`}>{item.title}</h3>
+          <p className={`text-[14px] font-extralight tracking-[0.015em] truncate ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+            {item.subtitle}
+          </p>
+          <div className="flex items-center gap-2 mt-1">
+            <span className={`text-[12px] font-light ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>{item.durationLabel}</span>
+            <span className={`text-[12px] ${theme === "dark" ? "text-gray-600" : "text-gray-400"}`}>•</span>
+            <span className={`text-[12px] font-light ${theme === "dark" ? "text-[#5B8A72]" : "text-[#4A5DB8]"}`}>
+              {item.typeLabel}
+            </span>
+          </div>
+        </div>
+        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${theme === "dark" ? "bg-white/10 border border-white/15" : "bg-[#F0F2FF]/80"}`}>
+          <Play className={`w-5 h-5 ml-0.5 ${theme === "dark" ? "text-[#5B8A72] fill-[#5B8A72]" : "text-[#4A5DB8] fill-[#4A5DB8]"}`} />
+        </div>
+      </button>
+    );
+  };
 
   return (
     <div className={`p-6 pb-8 min-h-screen ${
@@ -272,77 +329,36 @@ export default function Explore() {
           }}
         />
         <h2 className={`mb-5 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Audio talks</h2>
-        <div className="space-y-3">
-          {audioTalks.map((talk) => (
-            <div
-              key={talk.id}
-              className={`rounded-[22px] p-4 flex items-center gap-4 transition-transform active:scale-98 ${glassCard}`}
-            >
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${theme === "dark" ? "bg-gradient-to-br from-[#3D5A80] to-[#5B8A72]" : "bg-[#4A5DB8]"}`}>
-                <Headphones className="w-6 h-6 text-white" />
-              </div>
-              <div className="flex-1">
-                <h3 className={`${theme === "dark" ? "text-white" : "text-gray-900"}`}>{talk.title}</h3>
-                <p className={`text-[14px] font-extralight tracking-[0.015em] ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>{talk.speaker}</p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className={`text-[12px] font-light ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>{talk.duration}</span>
-                  <span className={`text-[12px] ${theme === "dark" ? "text-gray-600" : "text-gray-400"}`}>•</span>
-                  <span className={`text-[12px] font-light ${theme === "dark" ? "text-[#5B8A72]" : "text-[#4A5DB8]"}`}>{talk.topic}</span>
-                </div>
-              </div>
-              <button className={`w-10 h-10 rounded-full flex items-center justify-center ${theme === "dark" ? "bg-white/10 border border-white/15" : "bg-[#F0F2FF]/80"}`}>
-                <Play className={`w-5 h-5 ml-0.5 ${theme === "dark" ? "text-[#5B8A72] fill-[#5B8A72]" : "text-[#4A5DB8] fill-[#4A5DB8]"}`} />
-              </button>
-            </div>
-          ))}
+        <div className="space-y-5">
+          {audioTalks.map((talk) => renderAudioListItem(talk, () => navigate(`/explore/audio-talk/${talk.id}`)))}
         </div>
       </div>
 
-      {/* Seeds of Insight */}
-      <div className="relative">
+      {/* Audio Series */}
+      <div className="mb-10 relative">
         <div
           className="absolute -inset-4 -z-10 pointer-events-none"
           style={{
             background: theme === "dark"
-              ? "radial-gradient(ellipse at center, rgba(74,93,184,0.12) 0%, rgba(107,142,158,0.08) 40%, transparent 65%)"
-              : "radial-gradient(ellipse at center, rgba(74,93,184,0.06) 0%, transparent 65%)",
+              ? "radial-gradient(ellipse at center, rgba(74,93,184,0.15) 0%, rgba(91,138,114,0.08) 50%, transparent 68%)"
+              : "radial-gradient(ellipse at center, rgba(74,93,184,0.06) 0%, rgba(91,138,114,0.04) 50%, transparent 68%)",
             filter: "blur(50px)",
           }}
         />
-        <h2 className={`mb-1.5 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>Seeds of insight</h2>
-        <p className={`text-[14px] mb-5 font-extralight tracking-[0.02em] ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>New writings to contemplate</p>
-        <div className="space-y-4">
-          {writings.map((article, index) => (
-            <div key={article.id} className="relative">
-              <div
-                className="absolute -inset-2 -z-10 pointer-events-none rounded-[22px]"
-                style={{
-                  background: `radial-gradient(ellipse at center, ${glowColors[index % glowColors.length]} 0%, transparent 70%)`,
-                  filter: "blur(25px)",
-                }}
-              />
-              <div className={`rounded-[22px] overflow-hidden transition-transform active:scale-98 ${glassCard}`}>
-                <div className="h-40 w-full">
-                  <ImageWithFallback
-                    src={article.image}
-                    alt={article.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <BookOpen className={`w-4 h-4 ${theme === "dark" ? "text-gray-500" : "text-gray-400"}`} />
-                    <span className={`text-[12px] font-light ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>{article.readTime}</span>
-                  </div>
-                  <h3 className={`mb-1.5 ${theme === "dark" ? "text-white" : "text-gray-900"}`}>{article.title}</h3>
-                  <p className={`text-[14px] mb-2.5 font-extralight leading-[1.75] ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>{article.excerpt}</p>
-                  <p className={`text-[12px] font-extralight tracking-[0.02em] ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>by {article.author}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className="flex items-center gap-3 mb-5">
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${theme === "dark" ? "bg-white/10 border border-white/15" : "bg-white/60 border border-white/70"}`}>
+            <Headphones className={`w-5 h-5 ${theme === "dark" ? "text-white/75" : "text-[#4A5DB8]"}`} />
+          </div>
+          <div>
+            <h2 className={`${theme === "dark" ? "text-white" : "text-gray-900"}`}>Audio series</h2>
+            <p className={`text-[14px] font-extralight ${theme === "dark" ? "text-gray-500" : "text-gray-500"}`}>Long-form listening journeys</p>
+          </div>
+        </div>
+        <div className="space-y-5">
+          {audioSeries.map((series) => renderAudioListItem(series, () => navigate(`/explore/audio-series/${series.id.replace(/^series-/, "")}`)))}
         </div>
       </div>
+
     </div>
   );
 }

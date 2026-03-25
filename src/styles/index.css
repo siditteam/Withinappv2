@@ -1,3 +1,21 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+.startup-intro {
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	display: grid;
+	place-items: center;
+	background: #000;
+	width: 100vw;
+	height: 100dvh;
+}
+
+.startup-intro__video {
+	width: 100vw;
+	height: 100dvh;
+	object-fit: cover;
+	object-position: center;
+}

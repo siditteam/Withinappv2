@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router";
 import { useTheme } from "../contexts/ThemeContext";
-import { Quote } from "lucide-react";
+import { Circle, Quote } from "lucide-react";
 import { useMemo } from "react";
 import { glassCardClass } from "../utils/glassStyles";
+import { getEasySoulDuration } from "./soul/soulProgressStorage";
+import { soulPractices } from "./soul/soulPracticeData";
 
 const quotes = [
   { text: "The only way to make sense out of change is to plunge into it, move with it, and join the dance.", author: "Alan Watts" },
@@ -23,7 +25,7 @@ const quotes = [
 ];
 
 export default function DailyPractice() {
-  const { theme, backgroundTheme } = useTheme();
+  const { theme, backgroundTheme, practiceMode } = useTheme();
   const hasBackground = backgroundTheme !== "none";
   const navigate = useNavigate();
 
@@ -34,9 +36,9 @@ export default function DailyPractice() {
   }, []);
 
   const practiceButtons = [
-    { id: 1, title: "Inquiry", icon: "inquiry" as const, description: "Inner investigation", path: "/inquiry" },
-    { id: 2, title: "Soul Practices", icon: "soul" as const, description: "Awareness", path: "/soul" },
-    { id: 3, title: "Silence", icon: "silence" as const, description: "Silent meditation timer", path: "/silence" },
+    { id: 1, title: "Guided Practices", icon: "soul" as const, description: "Awareness", path: "/soul" },
+    { id: 2, title: "Silence", icon: "silence" as const, description: "Silent meditation timer", path: "/silence" },
+    { id: 3, title: "Inquiry", icon: "inquiry" as const, description: "Inner investigation", path: "/inquiry" },
     { id: 4, title: "Library", icon: "meditation" as const, description: "Guided practices", path: "/library" }
   ];
 
@@ -47,6 +49,10 @@ export default function DailyPractice() {
   };
 
   const glassCard = glassCardClass(theme);
+  const quickStartDuration = practiceMode === "easy" ? getEasySoulDuration().seconds : 300;
+  const quickStartPractice = soulPractices[0];
+  const quickStartPracticeId = quickStartPractice?.id ?? 1;
+  const quickStartPracticeTitle = quickStartPractice?.title ?? "Still Sitting";
 
   // Glow colors for each practice card
   const glowColors = [
@@ -64,6 +70,37 @@ export default function DailyPractice() {
       <div className="flex flex-col items-center mb-8 pt-4">
         <h1 className={`tracking-[0.35em] ${theme === "dark" ? "text-white" : "text-[#2A3580]"}`}>WITHIN</h1>
         <p className={`text-[11px] tracking-[0.3em] mt-2 font-extralight ${theme === "dark" ? "text-white/25" : "text-gray-400"}`}>Soul &middot; Body &middot; Mind</p>
+      </div>
+
+      {/* Primary Start Card */}
+      <div className="mb-4 relative">
+        <div
+          className="absolute inset-0 -z-10 pointer-events-none"
+          style={{
+            background: theme === "dark"
+              ? "radial-gradient(ellipse at center, rgba(74,93,184,0.2) 0%, rgba(122,111,155,0.1) 45%, transparent 75%)"
+              : "radial-gradient(ellipse at center, rgba(74,93,184,0.11) 0%, rgba(122,111,155,0.06) 45%, transparent 75%)",
+            filter: "blur(36px)",
+            transform: "scale(1.08)",
+          }}
+        />
+        <button
+          onClick={() =>
+            navigate(`/soul/${quickStartPracticeId}/session?duration=${quickStartDuration}&quickStart=1`)
+          }
+          className={`w-full rounded-[32px] px-6 py-7 text-center transition-transform active:scale-[0.98] ${glassCard}`}
+        >
+          <h2 className={`text-[30px] leading-none mb-4 ${theme === "dark" ? "text-white" : "text-[#2A3580]"}`}>
+            Start Meditation
+          </h2>
+          <p className={`text-[19px] leading-none mb-5 ${theme === "dark" ? "text-white/70" : "text-[#5F6FB4]"}`}>
+            Continue: {quickStartPracticeTitle}
+          </p>
+          <div className={`flex items-center justify-center gap-2 text-[17px] ${theme === "dark" ? "text-white/45" : "text-[#7A84B8]"}`}>
+            <Circle className="w-3.5 h-3.5" />
+            <span>3 min &middot; Beginner</span>
+          </div>
+        </button>
       </div>
 
       {/* Practice Buttons 2x2 Grid */}
@@ -91,7 +128,7 @@ export default function DailyPractice() {
             />
             <button
               onClick={() => handlePracticeClick(practice.path)}
-              className={`relative overflow-hidden rounded-[22px] transition-transform active:scale-[0.98] aspect-square text-left w-full ${glassCard}`}
+              className={`relative overflow-hidden rounded-[22px] transition-transform active:scale-[0.98] h-[116px] sm:h-[126px] text-left w-full ${glassCard}`}
             >
               <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
                 <h3 className={`text-center ${theme === "dark" ? "text-white" : "text-gray-900"}`}>{practice.title}</h3>

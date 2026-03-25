@@ -58,7 +58,7 @@ export default function SoulPracticeList() {
             theme === "dark" ? "text-white" : "text-gray-900"
           }`}
         >
-          Soul Practices
+          Guided Practices
         </h1>
         <p
           className={`text-[14px] font-extralight tracking-[0.02em] ${

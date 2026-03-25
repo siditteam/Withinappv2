@@ -1,23 +1,28 @@
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useSearchParams } from "react-router";
 import { Check } from "lucide-react";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { soulPractices } from "./soulPracticeData";
-import { incrementSoulCompleted, getEasySoulDuration } from "./soulProgressStorage";
+import { incrementSoulCompleted, getEasySoulDuration, markPracticeCompleted } from "./soulProgressStorage";
 import { glassCardClass, ctaBtnShadowClass, glowIconShadow } from "../../utils/glassStyles";
 
 export default function SoulPracticeComplete() {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const { theme, practiceMode } = useTheme();
   const [showSilenceSuggestion, setShowSilenceSuggestion] = useState(false);
 
   const practice = soulPractices.find((p) => p.id === Number(id));
 
+  const isQuickStartFlow = searchParams.get("quickStart") === "1";
+  const modifyModeDuration = Number(searchParams.get("duration")) || 300;
+
   // Increment completed count on mount (once per completion)
   useEffect(() => {
     incrementSoulCompleted();
+    if (practice) markPracticeCompleted(practice.id);
     if (practiceMode === "easy") {
       const { atCap } = getEasySoulDuration();
       if (atCap) {
@@ -26,6 +31,23 @@ export default function SoulPracticeComplete() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!practice || !isQuickStartFlow) return;
+
+    const nextId = practice.id + 1;
+    const lastPracticeId = soulPractices[soulPractices.length - 1]?.id ?? practice.id;
+    if (nextId > lastPracticeId) return;
+
+    const duration =
+      practiceMode === "easy" ? getEasySoulDuration().seconds : modifyModeDuration;
+
+    const timer = setTimeout(() => {
+      navigate(`/soul/${nextId}/session?duration=${duration}&quickStart=1`);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, [navigate, practice, practiceMode, isQuickStartFlow, modifyModeDuration]);
 
   if (!practice) {
     navigate("/soul");

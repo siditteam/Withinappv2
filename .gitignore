@@ -1,1 +1,9 @@
 node_modules
+.DS_Store
+src/assets/Audio files for sessions (Guided)/
+src/assets/Audio Series Files (Explore)/
+src/assets/Background Tracks/
+src/assets/*.mp4
+src/assets/*.pdf
+dist/assets/*.wav
+dist/assets/*.mp4

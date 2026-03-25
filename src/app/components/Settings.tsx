@@ -271,7 +271,7 @@ export default function Settings() {
                 </div>
                 <div className={`h-px ${theme === "dark" ? "bg-white/[0.04]" : "bg-black/[0.04]"}`} />
                 <div className="flex items-center justify-between">
-                  <span className={`text-[14px] font-light ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>Soul Practices</span>
+                  <span className={`text-[14px] font-light ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>Guided Practices</span>
                   <span className={`text-[14px] font-light ${theme === "dark" ? "text-white/50" : "text-gray-500"}`}>{getEasySoulDuration().label}</span>
                 </div>
                 <p className={`text-[12px] font-light leading-relaxed ${theme === "dark" ? "text-gray-500" : "text-gray-400"}`}>

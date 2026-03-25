@@ -113,3 +113,84 @@ export const durationOptions = [
   { label: "3 min", seconds: 180 },
   { label: "5 min", seconds: 300 },
 ];
+
+export interface InquirySwipeCard {
+  id: number;
+  title: string;
+  question: string;
+  answer: string;
+  furtherMeaning: string;
+  color: string;
+}
+
+const inquirySwipeTemplates = [
+  {
+    question: "What is my true nature?",
+    answer:
+      "You are pure awareness, not the body or mind. You are the witness, not the experience.",
+    furtherMeaning:
+      "All experiences change, but awareness remains constant. Recognizing this is freedom.",
+  },
+  {
+    question: "What is the nature of the world?",
+    answer:
+      "It appears in awareness, like a dream. It is not separate from you.",
+    furtherMeaning:
+      "The world seems real but depends entirely on awareness for its existence.",
+  },
+  {
+    question: "What does liberation mean after being enlightened?",
+    answer:
+      "Nothing binds you. You were always free. Liberation is recognition, not achievement.",
+    furtherMeaning:
+      "Bondage was never real. It was only a misunderstanding of identity.",
+  },
+  {
+    question: "What is the nature of ego after being enlightened?",
+    answer:
+      "It dissolves. No doer remains. Actions happen without ownership.",
+    furtherMeaning:
+      "The sense of 'I act' disappears, leaving only spontaneous flow.",
+  },
+  {
+    question: "What remains after complete realization?",
+    answer:
+      "Only awareness - silent, infinite, complete. Nothing else truly exists.",
+    furtherMeaning:
+      "All distinctions dissolve, leaving only pure being.",
+  },
+] as const;
+
+const inquirySwipeTemplateCounts = [49, 50, 50, 50, 31] as const;
+
+const inquirySwipePalette = [
+  "#3D5A80",
+  "#5B8A72",
+  "#7A6F9B",
+  "#8B7355",
+  "#6B8E9E",
+] as const;
+
+export const inquirySwipeCards: InquirySwipeCard[] = (() => {
+  const cards: InquirySwipeCard[] = [];
+  let nextId = 1;
+
+  inquirySwipeTemplates.forEach((template, templateIndex) => {
+    const count = inquirySwipeTemplateCounts[templateIndex] ?? 1;
+    const color = inquirySwipePalette[templateIndex % inquirySwipePalette.length];
+
+    for (let i = 0; i < count; i += 1) {
+      cards.push({
+        id: nextId,
+        title: `Card ${nextId}`,
+        question: template.question,
+        answer: template.answer,
+        furtherMeaning: template.furtherMeaning,
+        color,
+      });
+      nextId += 1;
+    }
+  });
+
+  return cards;
+})();

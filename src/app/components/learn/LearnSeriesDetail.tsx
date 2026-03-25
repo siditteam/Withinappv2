@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { useParams, useNavigate } from "react-router";
-import { ArrowLeft, Check, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { glassCardClass, glassSubtle } from "../../utils/glassStyles";
 import { seriesData } from "./learnData";
-import { getEpisodeContent } from "./learnContent";
 
 const depthColor = (depth: string, theme: string) => {
   if (theme === "dark") {
@@ -26,7 +24,6 @@ export default function LearnSeriesDetail() {
   const { theme, backgroundTheme } = useTheme();
   const hasBackground = backgroundTheme !== "none";
   const navigate = useNavigate();
-  const [expandedEpisodeId, setExpandedEpisodeId] = useState<string | null>(null);
 
   const series = seriesData.find((s) => s.id === id);
   if (!series) {
@@ -122,24 +119,18 @@ export default function LearnSeriesDetail() {
         </div>
       </div>
 
-      {/* Episode list */}
       <div className="space-y-2">
         {series.episodes.map((episode, index) => {
-          const isExpanded = expandedEpisodeId === episode.id;
-          const content = getEpisodeContent(series.id, episode.id);
-
           return (
-            <div
+            <button
               key={episode.id}
-              className={`rounded-[18px] p-4 transition-transform active:scale-[0.98] ${
+              type="button"
+              onClick={() => navigate(`/learn/${series.id}/${episode.id}`)}
+              className={`w-full rounded-[18px] p-4 text-left transition-transform active:scale-[0.98] ${
                 episode.completed ? subtle : glass
               }`}
             >
-              <button
-                type="button"
-                onClick={() => setExpandedEpisodeId((prev) => (prev === episode.id ? null : episode.id))}
-                className="w-full flex items-start gap-3.5 text-left"
-              >
+              <div className="flex items-start gap-3.5">
             {/* Status indicator */}
             <div className="flex-shrink-0 mt-0.5">
               {episode.completed ? (
@@ -166,7 +157,7 @@ export default function LearnSeriesDetail() {
             </div>
 
             {/* Content */}
-            <div className="flex-1 min-w-0 pr-2">
+            <div className="flex-1 min-w-0">
               <p
                 className={`text-[15px] font-light leading-[1.5] ${
                   episode.completed
@@ -198,26 +189,14 @@ export default function LearnSeriesDetail() {
             </div>
 
             <div className="flex-shrink-0 mt-0.5">
-              {isExpanded ? (
-                <ChevronUp className={`w-4 h-4 ${theme === "dark" ? "text-white/60" : "text-gray-500"}`} />
-              ) : (
-                <ChevronDown className={`w-4 h-4 ${theme === "dark" ? "text-white/60" : "text-gray-500"}`} />
-              )}
+              <Check
+                className={`w-4 h-4 opacity-0 ${
+                  theme === "dark" ? "text-white/40" : "text-gray-400"
+                }`}
+              />
             </div>
-              </button>
-
-              {isExpanded && (
-                <div className="mt-4 pt-4 border-t border-white/10">
-                  <p
-                    className={`text-[14px] leading-[1.75] whitespace-pre-line ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-700"
-                    }`}
-                  >
-                    {content || "Content for this episode will be available soon."}
-                  </p>
-                </div>
-              )}
-            </div>
+              </div>
+            </button>
           );
         })}
       </div>

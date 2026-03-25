@@ -3,6 +3,8 @@ import AppShell from "./components/AppShell";
 import Root from "./components/Root";
 import DailyPractice from "./components/DailyPractice";
 import Explore from "./components/Explore";
+import AudioTalkPlayer from "./components/AudioTalkPlayer";
+import AudioSeriesPlayer from "./components/AudioSeriesPlayer";
 import Profile from "./components/Profile";
 import Settings from "./components/Settings";
 import InquiryList from "./components/inquiry/InquiryList";
@@ -23,6 +25,7 @@ import SanghaSpace from "./components/sangha/SanghaSpace";
 import SanghaSession from "./components/sangha/SanghaSession";
 import Learn from "./components/learn/Learn";
 import LearnSeriesDetail from "./components/learn/LearnSeriesDetail";
+import LearnEpisodeReader from "./components/learn/LearnEpisodeReader";
 import InnerCircle from "./components/innercircle/InnerCircle";
 import FeelingSlider from "./components/feeling/FeelingSlider";
 import LandingFeelingGate from "./components/feeling/LandingFeelingGate";
@@ -56,6 +59,8 @@ export const router = createBrowserRouter([
             children: [
               { index: true, Component: LandingFeelingGate },
               { path: "explore", Component: Explore },
+              { path: "explore/audio-talk/:id", Component: AudioTalkPlayer },
+              { path: "explore/audio-series/:id", Component: AudioSeriesPlayer },
               { path: "explore/:id", loader: () => redirect("/explore") },
               { path: "profile", Component: Profile },
             ],
@@ -112,6 +117,7 @@ export const router = createBrowserRouter([
             children: [
               { index: true, Component: Learn },
               { path: ":id", Component: LearnSeriesDetail },
+              { path: ":id/:episodeId", Component: LearnEpisodeReader },
             ],
           },
           {
