@@ -11,7 +11,7 @@ import {
 import { BreathingOrb } from "../session/BreathingOrb";
 import { SessionBackground } from "../session/SessionBackground";
 import { ReturnTransition } from "../session/ReturnTransition";
-import { btnGlass } from "../../utils/glassStyles";
+import { btnGlass } from "../../lib/glassStyles";
 
 /* Silence uses a calm teal-blue blend */
 const SILENCE_COLOR = "#4A7A8A";

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { ArrowLeft } from "lucide-react";
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme } from "../../store/ThemeContext";
 import {
   getSilenceTotal,
   recoverInterruptedSession,
@@ -10,7 +10,7 @@ import {
 } from "../../lib/silence/silenceStorage";
 import { PillTimer } from "./PillTimer";
 import { WarpTransition } from "../session/WarpTransition";
-import { glassCardClass, ctaBtnShadowClass } from "../../utils/glassStyles";
+import { glassCardClass, ctaBtnShadowClass } from "../../lib/glassStyles";
 
 export default function SilenceDetail() {
   const navigate = useNavigate();

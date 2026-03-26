@@ -1,0 +1,185 @@
+const e=`Within App Episodes - Next Three Series From Year 1897 to 1926
+
+Series 10: It Works (1926)
+
+Episode 1: What Do You Really Want?
+Clarity begins when desire becomes explicit. Pause, ask what you truly want, and let honest intention replace half-formed wishing.
+
+Episode 2: The Power of Definite Intention
+Specific desire creates directional power. Define your goal in detail so attention, decisions, and momentum align.
+
+Episode 3: Thinking About What You Want
+Attention is creative. Rehearse what you want regularly so your mental field shifts from worry to constructive focus.
+
+Episode 4: The Practice of Gratitude
+Gratitude changes perception from scarcity to sufficiency. It stabilizes emotional tone and opens receptivity.
+
+Episode 5: Silence and Inner Communication
+Protect early intentions from external doubt. Quiet focus preserves conviction while ideas take root.
+
+Episode 6: Doubt and How to Move Through It
+Doubt is a recurring thought, not final truth. Acknowledge it, then return attention to the chosen direction.
+
+Episode 7: The Importance of Choosing Your Circle
+Environment shapes expectation. Stay close to voices that expand possibility and distance chronic pessimism.
+
+Episode 8: The Practice of Daily Attention
+Small repetition changes outcomes. Return to your desire morning, noon, and night to keep your inner compass steady.
+
+Episode 9: Recognizing Progress
+Progress is often subtle. New desires, released goals, and improved discernment are signs of real movement.
+
+Episode 10: The Caution of Intention
+Desire carries consequence. Align goals with personal integrity and collective good for sustainable fulfillment.
+
+Episode 11: The Mystery of How
+Your role is clear intention and aligned action. Release obsessive control of mechanisms and allow unexpected pathways.
+
+Episode 12: Giving and Receiving
+Flow requires circulation. Give what has helped you so receiving and contribution remain in balance.
+
+Episode 13: The Power of Sincere Thanks
+When results arrive, acknowledge them fully. Sincere gratitude reinforces trust in process and strengthens future expectancy.
+
+Episode 14: Starting Small
+Early wins build evidence. Begin with reachable goals to cultivate confidence and durable belief.
+
+Episode 15: The Invitation to Try
+Transformation comes from application, not admiration. Test the principles directly and let results educate you.
+
+Series 11: The Great Within (1907)
+
+Episode 1: Two Minds, One Life
+The conscious mind selects impressions; the deeper mind develops them. Your lived experience reflects this partnership.
+
+Episode 2: What You Feel, You Create
+Dominant feeling imprints deeply. Emotional tone becomes instruction for subconscious patterning.
+
+Episode 3: The Power of Attention
+Attention feeds structure. What repeatedly receives focus gains psychological and behavioral strength.
+
+Episode 4: The Danger of Resistance
+Fighting unwanted states can amplify them. Redirecting energy toward desired states is often more effective.
+
+Episode 5: The Seeds You Plant
+Thoughts and feelings are seeds with consequences. Repetition determines what takes root.
+
+Episode 6: Feeling the Soul of an Idea
+Concept alone is weak; embodied feeling is catalytic. Move ideas from abstraction into lived emotional reality.
+
+Episode 7: Faith as a Foundation
+Faith is steady expectancy, not passivity. It relaxes internal friction and improves receptivity to opportunity.
+
+Episode 8: The Practice of Desire
+Healthy desire is directional energy. Honored consciously, it becomes a force for growth.
+
+Episode 9: The Trap of Comparison
+Comparison divides attention and weakens identity coherence. Progress accelerates when focus returns to your own path.
+
+Episode 10: The Art of Letting Go
+Strong intention plus relaxed attachment creates openness. Clinging often blocks the very result you seek.
+
+Episode 11: The Quality of Your Thoughts
+Mental quality shapes behavioral quality. Elevating thought standards elevates outcomes.
+
+Episode 12: The Inner and the Outer
+Outer patterns often mirror inner assumptions. Change at the level of belief precedes durable external change.
+
+Episode 13: The Power of Poise
+Poise is composed power. Calm nervous-system regulation improves judgment, timing, and execution.
+
+Episode 14: The Gift of Sleep
+Pre-sleep thought influences subconscious processing. Night is active integration, not dead time.
+
+Episode 15: The Awakening
+Personal power is discovered through recognition and use. What you repeatedly affirm and enact becomes available.
+
+Series 12: In Tune with the Infinite (1897)
+
+Episode 1: The Two Sides of Your Mind
+Creation is collaborative between conscious selection and deeper execution. Intentional thought improves this cooperation.
+
+Episode 2: The Law of Attraction
+Like tends to gather like through attention, expectancy, and action bias. Mental orientation influences lived probability.
+
+Episode 3: Opening to the Infinite
+Receptivity matters. The more inward resistance softens, the more guidance and support become visible.
+
+Episode 4: The Power of Thought
+Thought is formative, not decorative. Dominant thought-patterns shape perception, behavior, and relational field.
+
+Episode 5: Oneness with the Infinite
+Separation narrows capacity; connectedness expands it. Identity with the whole reduces fear and increases trust.
+
+Episode 6: The Practice of Silence
+Silence sharpens intuition. Less internal noise means more signal from deeper intelligence.
+
+Episode 7: Faith as a Force
+Faith stabilizes direction during uncertainty. It is practical trust expressed through consistent action.
+
+Episode 8: The Nature of Prosperity
+Prosperity begins as an inner stance of sufficiency and possibility. Scarcity narratives narrow available options.
+
+Episode 9: The Power of Love
+Love harmonizes perception and behavior. It increases coherence, generosity, and relational intelligence.
+
+Episode 10: The Illusion of Separation
+Isolation contracts agency. Remembered interdependence restores meaning and mutual responsibility.
+
+Episode 11: Intuition and Inner Guidance
+Intuition is refined through listening and obedience. Repeated trust increases clarity.
+
+Episode 12: The Practice of Gratitude
+Gratitude conditions the mind to detect support, resources, and openings already present.
+
+Episode 13: Releasing Fear
+Fear is often anticipatory story. Replacing it with grounded trust unlocks creative action.
+
+Episode 14: The Power of Expectation
+Expectation influences what you notice and attempt. Upgraded expectation upgrades behavior.
+
+Episode 15: The Lotus Pond Within
+Inner life responds to flow. Openness nourishes vitality; chronic closure leads to stagnation.
+
+Episode 16: The Nature of Health
+Health expresses harmony across mind, body, and spirit. Inner narrative influences physiological state.
+
+Episode 17: The Practice of Affirmation
+Repeated, felt language reshapes identity assumptions. Speak in present truth to train the deeper mind.
+
+Episode 18: The Law of Giving and Receiving
+Healthy life is reciprocal movement. Generous output and gracious intake sustain abundance.
+
+Episode 19: The Power of Presence
+Now is the only actionable field. Presence converts scattered energy into effective agency.
+
+Episode 20: The Nature of Desire
+Desire is developmental signal. Refined desire reveals direction for meaningful growth.
+
+Episode 21: The Practice of Meditation
+Meditation creates space between awareness and thought. In that space, alignment becomes possible.
+
+Episode 22: The Power of Visualization
+Vivid inner rehearsal primes perception and action. What is practiced mentally becomes easier physically.
+
+Episode 23: The Nature of Character
+Character is cumulative practice. Thought, speech, and action repeated over time become identity.
+
+Episode 24: The Power of Service
+Service transforms self-concern into contribution. Meaning deepens when gifts are shared.
+
+Episode 25: The Nature of Success
+Enduring success is internal-external congruence. Alignment with deeper values outlasts status metrics.
+
+Episode 26: The Practice of Forgiveness
+Forgiveness releases energetic debt to the past. It returns attention to creation in the present.
+
+Episode 27: The Power of Belief
+Belief sets behavioral ceiling and floor. Revised beliefs permit revised performance.
+
+Episode 28: The Nature of Harmony
+Harmony is coherent alignment among inner parts and outer conduct. Coherence reduces friction.
+
+Episode 29: The Power of Attention
+Attention is life-force in directional form. Where it rests repeatedly, reality begins to organize.
+`;export{e as default};

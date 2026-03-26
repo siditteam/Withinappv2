@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { ArrowLeft, ChevronRight } from "lucide-react";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme } from "../../store/ThemeContext";
 import { seriesData } from "../../lib/learn/learnData";
 import { getEpisodeContent } from "../../lib/learn/learnContent";
 

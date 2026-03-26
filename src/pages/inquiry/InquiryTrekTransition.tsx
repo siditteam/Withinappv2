@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 import { Sparkles } from "lucide-react";
-import { useTheme } from "../../contexts/ThemeContext";
-import { glassCardClass, glassFloat, ctaBtnShadowClass } from "../../utils/glassStyles";
+import { useTheme } from "../../store/ThemeContext";
+import { glassCardClass, glassFloat, ctaBtnShadowClass } from "../../lib/glassStyles";
 
 export default function InquiryTrekTransition() {
   const navigate = useNavigate();

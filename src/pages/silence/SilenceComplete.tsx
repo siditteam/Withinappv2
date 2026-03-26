@@ -1,10 +1,10 @@
 import { useNavigate, useSearchParams } from "react-router";
 import { Check } from "lucide-react";
 import { motion } from "motion/react";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme } from "../../store/ThemeContext";
 import { formatSilenceTime } from "../../lib/silence/silenceStorage";
 import { PillTimer } from "./PillTimer";
-import { glassCardClass, ctaBtnShadowClass, glowIconShadow } from "../../utils/glassStyles";
+import { glassCardClass, ctaBtnShadowClass, glowIconShadow } from "../../lib/glassStyles";
 
 export default function SilenceComplete() {
   const navigate = useNavigate();
