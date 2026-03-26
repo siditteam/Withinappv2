@@ -10,3 +10,9 @@ src/assets/*.mp4
 src/assets/*.pdf
 dist/assets/*.wav
 dist/assets/*.mp4
+# Large binary audio/video — never commit these
+**/*.wav
+**/*.mp4
+**/*.m4a
+src_backup/
+src_backup2/
