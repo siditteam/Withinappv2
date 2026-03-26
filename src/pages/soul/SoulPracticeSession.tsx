@@ -44,7 +44,7 @@ export default function SoulPracticeSession() {
     sessionKey && getSessionAudio(sessionKey, durationMinutes),
   );
 
-  // Background-channel controls (used by AmbientAudioControls regardless of path)
+  // Background-channel controls (used by AmbientAudioControls regardless of path)////
   const [bgVolume, setBgVolume] = useState(0.18);
   const [bgMuted, setBgMuted] = useState(false);
 
