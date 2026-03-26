@@ -1,5 +1,8 @@
 node_modules
 .DS_Store
+dist/
+src_backup/
+src_backup2/
 src/assets/Audio files for sessions (Guided)/
 src/assets/Audio Series Files (Explore)/
 src/assets/Background Tracks/
