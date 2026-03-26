@@ -9,6 +9,15 @@ import { ReturnTransition } from "../session/ReturnTransition";
 import { AmbientAudioControls } from "../session/AmbientAudioControls";
 import { glassFloat, btnGlass } from "../../lib/glassStyles";
 import { useBackgroundTrack } from "../../lib/useBackgroundTrack";
+import { audioEngine, type SessionKey } from "../../services/audioEngine";
+import { getSessionAudio } from "../../lib/audioConfig";
+
+/** Practices that have a guided voice track in audioConfig */
+const SESSION_KEY_MAP: Record<number, SessionKey> = {
+  1: "witness",
+  2: "breathing",
+  3: "boredom",
+};
 
 type SessionPhase = "instruction" | "experience" | "closing";
 
@@ -28,7 +37,57 @@ export default function SoulPracticeSession() {
   const [exiting, setExiting] = useState(false);
   const exitingRef = useRef(false);
 
-  const ambientAudio = useBackgroundTrack(!isPaused && !exiting, { volume: 0.18 });
+  // Resolve whether this practice has a guided voice + background track
+  const sessionKey = practice ? SESSION_KEY_MAP[practice.id] : undefined;
+  const durationMinutes = Math.round(durationParam / 60);
+  const hasGuidedAudio = Boolean(
+    sessionKey && getSessionAudio(sessionKey, durationMinutes),
+  );
+
+  // Background-channel controls (used by AmbientAudioControls regardless of path)
+  const [bgVolume, setBgVolume] = useState(0.18);
+  const [bgMuted, setBgMuted] = useState(false);
+
+  // Fallback ambient track — active only for practices without guided audio
+  const ambientAudio = useBackgroundTrack(!hasGuidedAudio && !isPaused && !exiting, { volume: 0.18 });
+
+  // Start audioEngine when session mounts (guided practices only)
+  useEffect(() => {
+    if (!hasGuidedAudio || !sessionKey) return;
+    audioEngine.playSessionAudio(sessionKey, durationMinutes);
+    return () => { audioEngine.stopAudio(); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Keep audioEngine in sync with pause / exit state
+  useEffect(() => {
+    if (!hasGuidedAudio) return;
+    if (isPaused || exiting) {
+      audioEngine.pauseAudio();
+    } else {
+      audioEngine.resumeAudio();
+    }
+  }, [isPaused, exiting, hasGuidedAudio]);
+
+  // Bridge: background volume / mute → correct audio path
+  const handleBgVolumeChange = (vol: number) => {
+    setBgVolume(vol);
+    if (hasGuidedAudio) {
+      audioEngine.setBackgroundVolume(vol);
+    } else {
+      ambientAudio.setVolume(vol);
+    }
+  };
+
+  const handleBgToggleMuted = () => {
+    if (hasGuidedAudio) {
+      const next = !bgMuted;
+      setBgMuted(next);
+      audioEngine.muteBackground(next);
+    } else {
+      ambientAudio.toggleMuted();
+    }
+  };
 
   // Transition from instruction to experience after 8 seconds
   useEffect(() => {
@@ -154,10 +213,10 @@ export default function SoulPracticeSession() {
           >
             <AmbientAudioControls
               theme="dark"
-              isMuted={ambientAudio.isMuted}
-              onToggleMuted={ambientAudio.toggleMuted}
-              volume={ambientAudio.volume}
-              onVolumeChange={ambientAudio.setVolume}
+              isMuted={hasGuidedAudio ? bgMuted : ambientAudio.isMuted}
+              onToggleMuted={handleBgToggleMuted}
+              volume={hasGuidedAudio ? bgVolume : ambientAudio.volume}
+              onVolumeChange={handleBgVolumeChange}
             />
           </motion.div>
         )}

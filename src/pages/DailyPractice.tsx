@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { useTheme } from "../store/ThemeContext";
 import { Circle, Quote } from "lucide-react";
 import { useMemo } from "react";
-import { glassCardClass } from "../lib/glassStyles";
+import { glassCardClass, glassCardHover } from "../lib/glassStyles";
 import { getEasySoulDuration } from "../lib/soul/soulProgressStorage";
 import { soulPractices } from "../lib/soul/soulPracticeData";
 
@@ -49,6 +49,7 @@ export default function DailyPractice() {
   };
 
   const glassCard = glassCardClass(theme);
+  const glassHover = glassCardHover(theme);
   const quickStartDuration = practiceMode === "easy" ? getEasySoulDuration().seconds : 300;
   const quickStartPractice = soulPractices[0];
   const quickStartPracticeId = quickStartPractice?.id ?? 1;
@@ -88,7 +89,7 @@ export default function DailyPractice() {
           onClick={() =>
             navigate(`/soul/${quickStartPracticeId}/session?duration=${quickStartDuration}&quickStart=1`)
           }
-          className={`w-full rounded-[32px] px-6 py-7 text-center transition-transform active:scale-[0.98] ${glassCard}`}
+          className={`w-full rounded-[32px] px-6 py-7 text-center transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${glassCard} ${glassHover}`}
         >
           <h2 className={`text-[30px] leading-none mb-4 ${theme === "dark" ? "text-white" : "text-[#2A3580]"}`}>
             Start Meditation
@@ -128,7 +129,7 @@ export default function DailyPractice() {
             />
             <button
               onClick={() => handlePracticeClick(practice.path)}
-              className={`relative overflow-hidden rounded-[22px] transition-transform active:scale-[0.98] h-[116px] sm:h-[126px] text-left w-full ${glassCard}`}
+              className={`relative overflow-hidden rounded-[22px] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] h-[116px] sm:h-[126px] text-left w-full ${glassCard} ${glassHover}`}
             >
               <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
                 <h3 className={`text-center ${theme === "dark" ? "text-white" : "text-gray-900"}`}>{practice.title}</h3>

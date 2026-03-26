@@ -2,8 +2,14 @@ type ThemeMode = "light" | "dark";
 
 export function glassCardClass(theme: ThemeMode): string {
 	return theme === "dark"
-		? "border border-white/10 bg-white/[0.06] backdrop-blur-[20px] shadow-[0_8px_32px_rgba(0,0,0,0.28)]"
-		: "border border-white/70 bg-white/55 backdrop-blur-[20px] shadow-[0_10px_30px_rgba(74,93,184,0.10)]";
+		? "border border-white/[0.08] bg-white/[0.07] backdrop-blur-[28px] shadow-[0_16px_64px_rgba(0,0,0,0.22),0_4px_16px_rgba(0,0,0,0.14),inset_0_1px_0_rgba(255,255,255,0.09)]"
+		: "border border-white/45 bg-white/48 backdrop-blur-[28px] shadow-[0_16px_64px_rgba(74,93,184,0.11),0_4px_16px_rgba(74,93,184,0.07),inset_0_1px_0_rgba(255,255,255,0.85)]";
+}
+
+export function glassCardHover(theme: ThemeMode): string {
+	return theme === "dark"
+		? "hover:shadow-[0_24px_80px_rgba(0,0,0,0.30),0_6px_24px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.14)] hover:bg-white/[0.10]"
+		: "hover:shadow-[0_24px_80px_rgba(74,93,184,0.17),0_6px_24px_rgba(74,93,184,0.10),inset_0_1px_0_rgba(255,255,255,0.92)] hover:bg-white/55";
 }
 
 export function glassElevated(theme: ThemeMode): string {
