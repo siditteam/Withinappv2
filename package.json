@@ -1,0 +1,33 @@
+{
+  "name": "within",
+  "version": "1.0.0",
+  "description": "Within: a mobile-first meditation, silence, inquiry, and inner-practice platform.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "pnpm -r --if-present run lint",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "build": "pnpm -r --if-present run build",
+    "format": "prettier --write .",
+    "dev:mobile": "pnpm --filter mobile start",
+    "dev:admin": "pnpm --filter admin dev",
+    "dev:marketing": "pnpm --filter marketing dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.9.0",
+      "onFail": "download"
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.6.0",
+    "prettier": "^3.9.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.62.0"
+  }
+}
