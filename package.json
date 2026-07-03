@@ -1,0 +1,22 @@
+{
+  "name": "withinappv2",
+  "private": true,
+  "packageManager": "pnpm@9.15.3",
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck": "pnpm -r --filter \"./packages/*\" run typecheck",
+    "lint": "pnpm -r --filter \"./packages/*\" run lint",
+    "build": "pnpm -r --filter \"./packages/*\" exec tsc --pretty false"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.62.1",
+    "@typescript-eslint/parser": "^8.62.1",
+    "eslint": "^9.15.0",
+    "typescript": "^5.6.3"
+  }
+}
