@@ -1,12 +1,19 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { readJson, removeKeys, writeJson } from "./storage";
 
-// Local-only persistence for now. Phase 3 swaps this for `session_logs` /
+// Local-only persistence for now. A later phase swaps this for `session_logs` /
 // `user_progress` / `feeling_checkins` writes through @within/db, behind
 // this same set of function signatures.
 
+export type LocalSessionKind = "practice" | "silence";
+
 export interface LocalSessionLog {
   id: string;
-  practiceSessionId: string;
+  // Logs written before silence sessions existed carry no `kind` -- readers
+  // treat those as practice logs.
+  kind?: LocalSessionKind;
+  practiceSessionId?: string;
+  // Null for unguided sits started outside a preset (e.g. a Common Space room).
+  silencePresetId?: string | null;
   durationSeconds: number;
   completedAt: string;
 }
@@ -14,8 +21,6 @@ export interface LocalSessionLog {
 export interface LocalProgress {
   currentStreakDays: number;
   totalMeditationSeconds: number;
-  // No Silence session flow writes to this yet -- it stays an honest zero
-  // rather than being left out, since it mirrors user_progress.total_silence_seconds.
   totalSilenceSeconds: number;
   completedSessionsCount: number;
   lastPracticedAt: string | null;
@@ -46,20 +51,6 @@ const emptyProgress: LocalProgress = {
   completedSessionsCount: 0,
   lastPracticedAt: null,
 };
-
-async function readJson<T>(key: string, fallback: T): Promise<T> {
-  try {
-    const raw = await AsyncStorage.getItem(key);
-    if (!raw) return fallback;
-    return JSON.parse(raw) as T;
-  } catch {
-    return fallback;
-  }
-}
-
-async function writeJson(key: string, value: unknown): Promise<void> {
-  await AsyncStorage.setItem(key, JSON.stringify(value));
-}
 
 function isSameCalendarDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -93,14 +84,18 @@ export async function recordPracticeStarted(practiceSessionId: string): Promise<
   await writeJson(KEYS.lastActivity, activity);
 }
 
-export async function recordSessionCompletion(entry: {
-  practiceSessionId: string;
+async function appendCompletion(entry: {
+  kind: LocalSessionKind;
+  practiceSessionId?: string;
+  silencePresetId?: string | null;
   durationSeconds: number;
 }): Promise<LocalProgress> {
   const completedAt = new Date();
   const log: LocalSessionLog = {
-    id: `${entry.practiceSessionId}-${completedAt.getTime()}`,
+    id: `${entry.kind}-${completedAt.getTime()}`,
+    kind: entry.kind,
     practiceSessionId: entry.practiceSessionId,
+    silencePresetId: entry.silencePresetId ?? null,
     durationSeconds: entry.durationSeconds,
     completedAt: completedAt.toISOString(),
   };
@@ -122,15 +117,31 @@ export async function recordSessionCompletion(entry: {
 
   const next: LocalProgress = {
     currentStreakDays: nextStreak,
-    totalMeditationSeconds: previous.totalMeditationSeconds + entry.durationSeconds,
-    totalSilenceSeconds: previous.totalSilenceSeconds,
+    totalMeditationSeconds:
+      previous.totalMeditationSeconds + (entry.kind === "practice" ? entry.durationSeconds : 0),
+    totalSilenceSeconds: previous.totalSilenceSeconds + (entry.kind === "silence" ? entry.durationSeconds : 0),
     completedSessionsCount: previous.completedSessionsCount + 1,
     lastPracticedAt: completedAt.toISOString(),
   };
   await writeJson(KEYS.progress, next);
-  await recordPracticeStarted(entry.practiceSessionId);
 
   return next;
+}
+
+export async function recordSessionCompletion(entry: {
+  practiceSessionId: string;
+  durationSeconds: number;
+}): Promise<LocalProgress> {
+  const next = await appendCompletion({ kind: "practice", ...entry });
+  await recordPracticeStarted(entry.practiceSessionId);
+  return next;
+}
+
+export async function recordSilenceCompletion(entry: {
+  silencePresetId: string | null;
+  durationSeconds: number;
+}): Promise<LocalProgress> {
+  return appendCompletion({ kind: "silence", ...entry });
 }
 
 export async function recordFeelingCheckin(feeling: string): Promise<void> {
@@ -143,6 +154,6 @@ export async function recordFeelingCheckin(feeling: string): Promise<void> {
   await writeJson(KEYS.feelingCheckins, [...existing, checkin]);
 }
 
-export async function clearAllLocalData(): Promise<void> {
-  await AsyncStorage.removeMany([KEYS.sessionLogs, KEYS.progress, KEYS.feelingCheckins, KEYS.lastActivity]);
+export async function clearProgressData(): Promise<void> {
+  await removeKeys([KEYS.sessionLogs, KEYS.progress, KEYS.feelingCheckins, KEYS.lastActivity]);
 }

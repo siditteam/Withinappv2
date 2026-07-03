@@ -2,6 +2,7 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { Text } from '@/components/Themed';
 import { ExpandableRow } from '@/components/ExpandableRow';
+import { FavoriteToggle } from '@/components/FavoriteToggle';
 import { Screen } from '@/components/Screen';
 import { ErrorState, EmptyState } from '@/components/EmptyState';
 import { useAsync } from '@/hooks/useAsync';
@@ -41,6 +42,7 @@ export default function LibraryScreen() {
         <ExpandableRow key={item.id} title={item.body} subtitle={item.author ?? undefined}>
           {item.meaning ? <Text style={styles.meaning}>{item.meaning}</Text> : null}
           {item.deeper_explanation ? <Text style={styles.deeper}>{item.deeper_explanation}</Text> : null}
+          <FavoriteToggle contentType="library_item" contentId={item.id} />
         </ExpandableRow>
       ))}
     </Screen>

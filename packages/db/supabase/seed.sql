@@ -272,13 +272,29 @@ insert into common_space_rooms (title, description, room_type, is_public, durati
   ('Open Silence', 'No theme, no agenda -- just shared stillness.', 'silence', true, 1200, 'open-ended practice', null, 'published', 'free', 4);
 
 -- ---------------------------------------------------------------------------
--- learn_series (3 -- episodes deferred to a later phase)
+-- learn_series (3)
 -- ---------------------------------------------------------------------------
 
 insert into learn_series (title, description, status, visibility, sort_order) values
   ('Foundations of Stillness', 'The basics of sitting, breathing, and returning attention.', 'published', 'free', 1),
   ('Working with Difficult Emotions', 'Meeting fear, anger, and grief without being run by them.', 'published', 'free', 2),
   ('The Practice of Inquiry', 'Using direct questions to look past assumption.', 'published', 'free', 3);
+
+-- ---------------------------------------------------------------------------
+-- learn_episodes (3 per series -- no recordings uploaded yet, so
+-- audio_asset_id stays null and the app shows an honest "not available yet")
+-- ---------------------------------------------------------------------------
+
+insert into learn_episodes (series_id, title, audio_asset_id, duration_seconds, episode_number, status, visibility) values
+  ((select id from learn_series where title = 'Foundations of Stillness'), 'Taking Your Seat', null, 420, 1, 'published', 'free'),
+  ((select id from learn_series where title = 'Foundations of Stillness'), 'Following the Breath', null, 480, 2, 'published', 'free'),
+  ((select id from learn_series where title = 'Foundations of Stillness'), 'Beginning Again', null, 480, 3, 'published', 'free'),
+  ((select id from learn_series where title = 'Working with Difficult Emotions'), 'Naming What Is Here', null, 540, 1, 'published', 'free'),
+  ((select id from learn_series where title = 'Working with Difficult Emotions'), 'Making Room for Fear', null, 600, 2, 'published', 'free'),
+  ((select id from learn_series where title = 'Working with Difficult Emotions'), 'Anger Without Armor', null, 540, 3, 'published', 'free'),
+  ((select id from learn_series where title = 'The Practice of Inquiry'), 'Asking Without Answering', null, 480, 1, 'published', 'free'),
+  ((select id from learn_series where title = 'The Practice of Inquiry'), 'Looking Past the Label', null, 540, 2, 'published', 'free'),
+  ((select id from learn_series where title = 'The Practice of Inquiry'), 'Living with a Question', null, 600, 3, 'published', 'free');
 
 -- ---------------------------------------------------------------------------
 -- audio_talks (5)

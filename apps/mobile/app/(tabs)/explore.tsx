@@ -1,4 +1,5 @@
 import { ActivityIndicator, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 
 import { Text, View } from '@/components/Themed';
 import { Card } from '@/components/Card';
@@ -16,6 +17,7 @@ interface ExploreData {
 }
 
 export default function ExploreScreen() {
+  const router = useRouter();
   const { data, loading, error } = useAsync<ExploreData>(async () => {
     const [rooms, series, talks] = await Promise.all([
       contentRepository.listCommonSpaceRooms(),
@@ -48,14 +50,24 @@ export default function ExploreScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionLabel}>Common Space</Text>
         {data.rooms.map((room) => (
-          <ListRow key={room.id} title={room.title} subtitle={room.description ?? undefined} />
+          <ListRow
+            key={room.id}
+            title={room.title}
+            subtitle={room.description ?? undefined}
+            onPress={() => router.push(`/rooms/${room.id}`)}
+          />
         ))}
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionLabel}>Learn</Text>
         {data.series.map((series) => (
-          <ListRow key={series.id} title={series.title} subtitle={series.description ?? undefined} />
+          <ListRow
+            key={series.id}
+            title={series.title}
+            subtitle={series.description ?? undefined}
+            onPress={() => router.push(`/learn/${series.id}`)}
+          />
         ))}
       </View>
 
@@ -67,6 +79,7 @@ export default function ExploreScreen() {
             title={talk.title}
             subtitle={talk.speaker ?? undefined}
             trailing={talk.duration_seconds ? `${Math.round(talk.duration_seconds / 60)} min` : undefined}
+            onPress={() => router.push(`/talks/${talk.id}`)}
           />
         ))}
       </View>

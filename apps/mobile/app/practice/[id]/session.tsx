@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { ActivityIndicator, Pressable, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet } from 'react-native';
 
-import { Text, View, useThemeColor } from '@/components/Themed';
+import { Text, View } from '@/components/Themed';
+import { ControlButton } from '@/components/ControlButton';
 import { Screen } from '@/components/Screen';
 import { ErrorState, EmptyState } from '@/components/EmptyState';
 import { useAsync } from '@/hooks/useAsync';
@@ -126,33 +127,6 @@ function stateLabel(state: string): string {
   }
 }
 
-function ControlButton({
-  label,
-  onPress,
-  disabled,
-}: {
-  label: string;
-  onPress: () => void;
-  disabled?: boolean;
-}) {
-  const borderColor = useThemeColor({}, 'border');
-
-  return (
-    <Pressable
-      onPress={onPress}
-      disabled={disabled}
-      style={({ pressed }) => [
-        styles.button,
-        { borderColor },
-        pressed && styles.buttonPressed,
-        disabled && styles.buttonDisabled,
-      ]}
-    >
-      <Text style={styles.buttonLabel}>{label}</Text>
-    </Pressable>
-  );
-}
-
 const styles = StyleSheet.create({
   center: {
     flex: 1,
@@ -181,21 +155,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 16,
     paddingBottom: 12,
-  },
-  button: {
-    borderWidth: 1,
-    borderRadius: 24,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-  },
-  buttonPressed: {
-    opacity: 0.5,
-  },
-  buttonDisabled: {
-    opacity: 0.3,
-  },
-  buttonLabel: {
-    fontSize: 15,
-    fontWeight: '500',
   },
 });

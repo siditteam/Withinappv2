@@ -2,10 +2,11 @@ import { ActivityIndicator, StyleSheet } from 'react-native';
 
 import { Text, View } from '@/components/Themed';
 import { ExpandableRow } from '@/components/ExpandableRow';
+import { FavoriteToggle } from '@/components/FavoriteToggle';
 import { Screen } from '@/components/Screen';
 import { ErrorState, EmptyState } from '@/components/EmptyState';
 import { useAsync } from '@/hooks/useAsync';
-import { contentRepository } from '@/data';
+import { contentRepository, recordInquiryCardExplored } from '@/data';
 import type { InquiryCardRow, InquiryCategoryRow } from '@within/db';
 
 interface InquiryData {
@@ -55,10 +56,19 @@ export default function InquiryScreen() {
             <Text style={styles.sectionTitle}>{category.title}</Text>
             {category.description ? <Text style={styles.sectionSubtitle}>{category.description}</Text> : null}
             {cards.map((card) => (
-              <ExpandableRow key={card.id} title={card.question ?? card.prompt}>
+              <ExpandableRow
+                key={card.id}
+                title={card.question ?? card.prompt}
+                onToggle={(expanded) => {
+                  // Opening a card counts as exploring it -- surfaced as
+                  // inquiry progress on the Profile tab.
+                  if (expanded) recordInquiryCardExplored(card.id);
+                }}
+              >
                 {card.answer ? <Text style={styles.label}>{card.answer}</Text> : null}
                 {card.explanation ? <Text style={styles.muted}>{card.explanation}</Text> : null}
                 {card.reflection_prompt ? <Text style={styles.reflection}>{card.reflection_prompt}</Text> : null}
+                <FavoriteToggle contentType="inquiry_card" contentId={card.id} />
               </ExpandableRow>
             ))}
           </View>

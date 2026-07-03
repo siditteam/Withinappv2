@@ -1,4 +1,5 @@
 import { ActivityIndicator } from 'react-native';
+import { useRouter } from 'expo-router';
 
 import { ListRow } from '@/components/ListRow';
 import { Screen } from '@/components/Screen';
@@ -9,6 +10,7 @@ import { formatDuration } from '@/utils/format';
 import type { SilencePresetRow } from '@within/db';
 
 export default function SilenceScreen() {
+  const router = useRouter();
   const { data, loading, error } = useAsync<SilencePresetRow[]>(() => contentRepository.listSilencePresets(), []);
 
   if (loading) {
@@ -43,6 +45,7 @@ export default function SilenceScreen() {
           title={preset.title}
           subtitle={preset.description ?? undefined}
           trailing={formatDuration(preset.duration_seconds)}
+          onPress={() => router.push({ pathname: '/silence/session', params: { presetId: preset.id } })}
         />
       ))}
     </Screen>

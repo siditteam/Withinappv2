@@ -3,6 +3,7 @@ import type {
   CommonSpaceRoomRow,
   InquiryCardRow,
   InquiryCategoryRow,
+  LearnEpisodeRow,
   LearnSeriesRow,
   LibraryItemRow,
   MediaAssetRow,
@@ -18,6 +19,7 @@ import {
   mockCommonSpaceRooms,
   mockInquiryCards,
   mockInquiryCategories,
+  mockLearnEpisodes,
   mockLearnSeries,
   mockLibraryItems,
   mockPracticeSessions,
@@ -38,13 +40,19 @@ export interface ContentRepository {
   getPracticeSession(id: string): Promise<PracticeSessionRow | null>;
   getAudioSourceForMediaAsset(mediaAssetId: string): Promise<PlayableAudioSource | null>;
   listSilencePresets(): Promise<SilencePresetRow[]>;
+  getSilencePreset(id: string): Promise<SilencePresetRow | null>;
   listInquiryCategories(): Promise<InquiryCategoryRow[]>;
   listInquiryCards(categoryId?: string): Promise<InquiryCardRow[]>;
   listLibraryItems(): Promise<LibraryItemRow[]>;
   getQuoteOfTheDay(): Promise<QuoteRow | null>;
   listCommonSpaceRooms(): Promise<CommonSpaceRoomRow[]>;
+  getCommonSpaceRoom(id: string): Promise<CommonSpaceRoomRow | null>;
   listLearnSeries(): Promise<LearnSeriesRow[]>;
+  getLearnSeries(id: string): Promise<LearnSeriesRow | null>;
+  listLearnEpisodes(seriesId: string): Promise<LearnEpisodeRow[]>;
+  getLearnEpisode(id: string): Promise<LearnEpisodeRow | null>;
   listAudioTalks(): Promise<AudioTalkRow[]>;
+  getAudioTalk(id: string): Promise<AudioTalkRow | null>;
 }
 
 function dayOfYear(date: Date): number {
@@ -79,6 +87,10 @@ class MockContentRepository implements ContentRepository {
     return [...mockSilencePresets].sort((a, b) => a.sort_order - b.sort_order);
   }
 
+  async getSilencePreset(id: string): Promise<SilencePresetRow | null> {
+    return mockSilencePresets.find((preset) => preset.id === id) ?? null;
+  }
+
   async listInquiryCategories(): Promise<InquiryCategoryRow[]> {
     return [...mockInquiryCategories].sort((a, b) => a.sort_order - b.sort_order);
   }
@@ -102,12 +114,34 @@ class MockContentRepository implements ContentRepository {
     return [...mockCommonSpaceRooms].sort((a, b) => a.sort_order - b.sort_order);
   }
 
+  async getCommonSpaceRoom(id: string): Promise<CommonSpaceRoomRow | null> {
+    return mockCommonSpaceRooms.find((room) => room.id === id) ?? null;
+  }
+
   async listLearnSeries(): Promise<LearnSeriesRow[]> {
     return [...mockLearnSeries].sort((a, b) => a.sort_order - b.sort_order);
   }
 
+  async getLearnSeries(id: string): Promise<LearnSeriesRow | null> {
+    return mockLearnSeries.find((series) => series.id === id) ?? null;
+  }
+
+  async listLearnEpisodes(seriesId: string): Promise<LearnEpisodeRow[]> {
+    return mockLearnEpisodes
+      .filter((episode) => episode.series_id === seriesId)
+      .sort((a, b) => a.episode_number - b.episode_number);
+  }
+
+  async getLearnEpisode(id: string): Promise<LearnEpisodeRow | null> {
+    return mockLearnEpisodes.find((episode) => episode.id === id) ?? null;
+  }
+
   async listAudioTalks(): Promise<AudioTalkRow[]> {
     return [...mockAudioTalks].sort((a, b) => a.sort_order - b.sort_order);
+  }
+
+  async getAudioTalk(id: string): Promise<AudioTalkRow | null> {
+    return mockAudioTalks.find((talk) => talk.id === id) ?? null;
   }
 }
 
@@ -157,6 +191,12 @@ class SupabaseContentRepository implements ContentRepository {
     return data ?? [];
   }
 
+  async getSilencePreset(id: string): Promise<SilencePresetRow | null> {
+    const { data, error } = await this.client.from("silence_presets").select("*").eq("id", id).maybeSingle();
+    if (error) throw error;
+    return (data as SilencePresetRow | null) ?? null;
+  }
+
   async listInquiryCategories(): Promise<InquiryCategoryRow[]> {
     const { data, error } = await this.client
       .from("inquiry_categories")
@@ -202,6 +242,12 @@ class SupabaseContentRepository implements ContentRepository {
     return data ?? [];
   }
 
+  async getCommonSpaceRoom(id: string): Promise<CommonSpaceRoomRow | null> {
+    const { data, error } = await this.client.from("common_space_rooms").select("*").eq("id", id).maybeSingle();
+    if (error) throw error;
+    return (data as CommonSpaceRoomRow | null) ?? null;
+  }
+
   async listLearnSeries(): Promise<LearnSeriesRow[]> {
     const { data, error } = await this.client
       .from("learn_series")
@@ -212,6 +258,29 @@ class SupabaseContentRepository implements ContentRepository {
     return data ?? [];
   }
 
+  async getLearnSeries(id: string): Promise<LearnSeriesRow | null> {
+    const { data, error } = await this.client.from("learn_series").select("*").eq("id", id).maybeSingle();
+    if (error) throw error;
+    return (data as LearnSeriesRow | null) ?? null;
+  }
+
+  async listLearnEpisodes(seriesId: string): Promise<LearnEpisodeRow[]> {
+    const { data, error } = await this.client
+      .from("learn_episodes")
+      .select("*")
+      .eq("series_id", seriesId)
+      .eq("status", "published")
+      .order("episode_number", { ascending: true });
+    if (error) throw error;
+    return data ?? [];
+  }
+
+  async getLearnEpisode(id: string): Promise<LearnEpisodeRow | null> {
+    const { data, error } = await this.client.from("learn_episodes").select("*").eq("id", id).maybeSingle();
+    if (error) throw error;
+    return (data as LearnEpisodeRow | null) ?? null;
+  }
+
   async listAudioTalks(): Promise<AudioTalkRow[]> {
     const { data, error } = await this.client
       .from("audio_talks")
@@ -220,6 +289,12 @@ class SupabaseContentRepository implements ContentRepository {
       .order("sort_order", { ascending: true });
     if (error) throw error;
     return data ?? [];
+  }
+
+  async getAudioTalk(id: string): Promise<AudioTalkRow | null> {
+    const { data, error } = await this.client.from("audio_talks").select("*").eq("id", id).maybeSingle();
+    if (error) throw error;
+    return (data as AudioTalkRow | null) ?? null;
   }
 }
 

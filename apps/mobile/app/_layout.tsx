@@ -60,8 +60,13 @@ function RootLayoutNav() {
         <Stack.Screen name="practice/[id]/session" options={{ title: '' }} />
         <Stack.Screen name="practice/[id]/complete" options={{ title: '', headerShown: false }} />
         <Stack.Screen name="silence/index" options={{ title: 'Silence' }} />
+        <Stack.Screen name="silence/session" options={{ title: '' }} />
         <Stack.Screen name="inquiry/index" options={{ title: 'Inquiry' }} />
         <Stack.Screen name="library/index" options={{ title: 'Library' }} />
+        <Stack.Screen name="rooms/[id]" options={{ title: 'Common Space' }} />
+        <Stack.Screen name="learn/[seriesId]/index" options={{ title: 'Learn' }} />
+        <Stack.Screen name="learn/[seriesId]/[episodeId]" options={{ title: '' }} />
+        <Stack.Screen name="talks/[id]" options={{ title: 'Audio Talk' }} />
         <Stack.Screen name="feeling-checkin" options={{ presentation: 'modal', title: 'Feeling Check-in' }} />
       </Stack>
     </ThemeProvider>

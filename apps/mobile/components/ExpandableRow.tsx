@@ -6,17 +6,24 @@ import { Text, useThemeColor } from "@/components/Themed";
 interface ExpandableRowProps {
   title: string;
   subtitle?: string;
+  onToggle?: (expanded: boolean) => void;
   children: ReactNode;
 }
 
-export function ExpandableRow({ title, subtitle, children }: ExpandableRowProps) {
+export function ExpandableRow({ title, subtitle, onToggle, children }: ExpandableRowProps) {
   const [expanded, setExpanded] = useState(false);
   const borderColor = useThemeColor({}, "border");
   const textMuted = useThemeColor({}, "textMuted");
 
+  function handlePress() {
+    const next = !expanded;
+    setExpanded(next);
+    onToggle?.(next);
+  }
+
   return (
     <View style={[styles.container, { borderBottomColor: borderColor }]}>
-      <Pressable onPress={() => setExpanded((value) => !value)} style={styles.header}>
+      <Pressable onPress={handlePress} style={styles.header}>
         <View style={styles.textGroup}>
           <Text style={styles.title}>{title}</Text>
           {subtitle ? <Text style={[styles.subtitle, { color: textMuted }]}>{subtitle}</Text> : null}

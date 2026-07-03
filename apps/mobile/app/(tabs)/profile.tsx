@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { Alert, StyleSheet, View as RNView } from 'react-native';
 
 import { Text, View } from '@/components/Themed';
@@ -10,9 +10,12 @@ import { EmptyState } from '@/components/EmptyState';
 import {
   clearAllLocalData,
   contentRepository,
+  getExploredInquiryCardIds,
+  getFavorites,
   getFeelingCheckins,
   getProgress,
   getSessionLogs,
+  type LocalFavorite,
   type LocalFeelingCheckin,
   type LocalProgress,
   type LocalSessionLog,
@@ -23,21 +26,60 @@ interface ProfileData {
   progress: LocalProgress;
   sessionLogs: LocalSessionLog[];
   feelingCheckins: LocalFeelingCheckin[];
+  favorites: LocalFavorite[];
+  exploredInquiryCount: number;
+  inquiryCardCount: number;
   practiceTitles: Record<string, string>;
+  silenceTitles: Record<string, string>;
+  inquiryTitles: Record<string, string>;
+  libraryTitles: Record<string, string>;
+  talkTitles: Record<string, string>;
 }
 
 export default function ProfileScreen() {
+  const router = useRouter();
   const [data, setData] = useState<ProfileData | null>(null);
 
   const load = useCallback(async () => {
-    const [progress, sessionLogs, feelingCheckins, practiceSessions] = await Promise.all([
+    const [
+      progress,
+      sessionLogs,
+      feelingCheckins,
+      favorites,
+      exploredInquiryCardIds,
+      practiceSessions,
+      silencePresets,
+      inquiryCards,
+      libraryItems,
+      audioTalks,
+    ] = await Promise.all([
       getProgress(),
       getSessionLogs(),
       getFeelingCheckins(),
+      getFavorites(),
+      getExploredInquiryCardIds(),
       contentRepository.listPracticeSessions(),
+      contentRepository.listSilencePresets(),
+      contentRepository.listInquiryCards(),
+      contentRepository.listLibraryItems(),
+      contentRepository.listAudioTalks(),
     ]);
-    const practiceTitles = Object.fromEntries(practiceSessions.map((session) => [session.id, session.title]));
-    setData({ progress, sessionLogs, feelingCheckins, practiceTitles });
+    const cardIds = new Set(inquiryCards.map((card) => card.id));
+    setData({
+      progress,
+      sessionLogs,
+      feelingCheckins,
+      favorites,
+      // Only count cards that still exist, so unpublishing a card can't
+      // leave progress above the total.
+      exploredInquiryCount: exploredInquiryCardIds.filter((id) => cardIds.has(id)).length,
+      inquiryCardCount: inquiryCards.length,
+      practiceTitles: Object.fromEntries(practiceSessions.map((session) => [session.id, session.title])),
+      silenceTitles: Object.fromEntries(silencePresets.map((preset) => [preset.id, preset.title])),
+      inquiryTitles: Object.fromEntries(inquiryCards.map((card) => [card.id, card.question ?? card.prompt])),
+      libraryTitles: Object.fromEntries(libraryItems.map((item) => [item.id, item.title ?? item.body])),
+      talkTitles: Object.fromEntries(audioTalks.map((talk) => [talk.id, talk.title])),
+    });
   }, []);
 
   useFocusEffect(
@@ -47,7 +89,7 @@ export default function ProfileScreen() {
   );
 
   function handleReset() {
-    Alert.alert('Reset local data?', 'This clears your local streak, history, and check-ins on this device.', [
+    Alert.alert('Reset local data?', 'This clears your local streak, history, check-ins, and saved items on this device.', [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'Reset',
@@ -64,7 +106,43 @@ export default function ProfileScreen() {
     return <Screen />;
   }
 
-  const { progress, sessionLogs, feelingCheckins, practiceTitles } = data;
+  const {
+    progress,
+    sessionLogs,
+    feelingCheckins,
+    favorites,
+    exploredInquiryCount,
+    inquiryCardCount,
+    practiceTitles,
+    silenceTitles,
+    inquiryTitles,
+    libraryTitles,
+    talkTitles,
+  } = data;
+
+  function logTitle(log: LocalSessionLog): string {
+    if (log.kind === 'silence') {
+      return (log.silencePresetId && silenceTitles[log.silencePresetId]) || 'Silence';
+    }
+    return (log.practiceSessionId && practiceTitles[log.practiceSessionId]) || 'Practice session';
+  }
+
+  function favoriteRow(favorite: LocalFavorite): { title: string; subtitle: string } {
+    switch (favorite.contentType) {
+      case 'inquiry_card':
+        return { title: inquiryTitles[favorite.contentId] ?? 'Inquiry card', subtitle: 'Inquiry' };
+      case 'library_item':
+        return { title: libraryTitles[favorite.contentId] ?? 'Library item', subtitle: 'Library' };
+      case 'audio_talk':
+        return { title: talkTitles[favorite.contentId] ?? 'Audio talk', subtitle: 'Audio Talk' };
+      case 'practice_session':
+        return { title: practiceTitles[favorite.contentId] ?? 'Practice', subtitle: 'Practice' };
+      case 'silence_preset':
+        return { title: silenceTitles[favorite.contentId] ?? 'Silence', subtitle: 'Silence' };
+      default:
+        return { title: 'Saved item', subtitle: 'Saved' };
+    }
+  }
 
   return (
     <Screen>
@@ -79,12 +157,49 @@ export default function ProfileScreen() {
 
       <View style={styles.section}>
         <Text style={styles.sectionLabel}>Inquiry progress</Text>
-        <EmptyState title="Nothing yet" message="Inquiry progress tracking is coming in a later phase." />
+        {inquiryCardCount === 0 ? (
+          <EmptyState title="No inquiry cards yet" />
+        ) : (
+          <Card>
+            <Text style={styles.statValue}>
+              {exploredInquiryCount} of {inquiryCardCount}
+            </Text>
+            <Text style={styles.statLabel}>questions opened</Text>
+          </Card>
+        )}
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionLabel}>Saved content</Text>
-        <EmptyState title="Nothing saved yet" message="Items you save from Library and Inquiry will show up here." />
+        {favorites.length === 0 ? (
+          <EmptyState
+            title="Nothing saved yet"
+            message="Items you save from Library, Inquiry, and Audio Talks will show up here."
+          />
+        ) : (
+          [...favorites]
+            .reverse()
+            .slice(0, 10)
+            .map((favorite) => {
+              const row = favoriteRow(favorite);
+              // Only types with their own detail screen are navigable;
+              // library items and inquiry cards live inside their lists.
+              const href =
+                favorite.contentType === 'audio_talk'
+                  ? (`/talks/${favorite.contentId}` as const)
+                  : favorite.contentType === 'practice_session'
+                    ? (`/practice/${favorite.contentId}` as const)
+                    : null;
+              return (
+                <ListRow
+                  key={`${favorite.contentType}:${favorite.contentId}`}
+                  title={row.title}
+                  subtitle={row.subtitle}
+                  onPress={href ? () => router.push(href) : undefined}
+                />
+              );
+            })
+        )}
       </View>
 
       <View style={styles.section}>
@@ -116,7 +231,7 @@ export default function ProfileScreen() {
             .map((log) => (
               <ListRow
                 key={log.id}
-                title={practiceTitles[log.practiceSessionId] ?? 'Practice session'}
+                title={logTitle(log)}
                 subtitle={new Date(log.completedAt).toLocaleString()}
                 trailing={formatDuration(log.durationSeconds)}
               />

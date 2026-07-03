@@ -3,6 +3,7 @@ import type {
   CommonSpaceRoomRow,
   InquiryCardRow,
   InquiryCategoryRow,
+  LearnEpisodeRow,
   LearnSeriesRow,
   LibraryItemRow,
   PracticeSessionRow,
@@ -398,6 +399,18 @@ export const mockLearnSeries: LearnSeriesRow[] = [
   { id: "learn-foundations", title: "Foundations of Stillness", description: "The basics of sitting, breathing, and returning attention.", cover_asset_id: null, status: "published", visibility: "free", sort_order: 1, created_at: now, updated_at: now },
   { id: "learn-difficult-emotions", title: "Working with Difficult Emotions", description: "Meeting fear, anger, and grief without being run by them.", cover_asset_id: null, status: "published", visibility: "free", sort_order: 2, created_at: now, updated_at: now },
   { id: "learn-inquiry", title: "The Practice of Inquiry", description: "Using direct questions to look past assumption.", cover_asset_id: null, status: "published", visibility: "free", sort_order: 3, created_at: now, updated_at: now },
+];
+
+export const mockLearnEpisodes: LearnEpisodeRow[] = [
+  { id: "learn-foundations-1", series_id: "learn-foundations", title: "Taking Your Seat", audio_asset_id: MOCK_BELL_ASSET_ID, duration_seconds: 420, episode_number: 1, status: "published", visibility: "free", created_at: now, updated_at: now },
+  { id: "learn-foundations-2", series_id: "learn-foundations", title: "Following the Breath", audio_asset_id: MOCK_BELL_ASSET_ID, duration_seconds: 480, episode_number: 2, status: "published", visibility: "free", created_at: now, updated_at: now },
+  { id: "learn-foundations-3", series_id: "learn-foundations", title: "Beginning Again", audio_asset_id: MOCK_BELL_ASSET_ID, duration_seconds: 480, episode_number: 3, status: "published", visibility: "free", created_at: now, updated_at: now },
+  { id: "learn-emotions-1", series_id: "learn-difficult-emotions", title: "Naming What Is Here", audio_asset_id: MOCK_BELL_ASSET_ID, duration_seconds: 540, episode_number: 1, status: "published", visibility: "free", created_at: now, updated_at: now },
+  { id: "learn-emotions-2", series_id: "learn-difficult-emotions", title: "Making Room for Fear", audio_asset_id: MOCK_BELL_ASSET_ID, duration_seconds: 600, episode_number: 2, status: "published", visibility: "free", created_at: now, updated_at: now },
+  { id: "learn-emotions-3", series_id: "learn-difficult-emotions", title: "Anger Without Armor", audio_asset_id: MOCK_BELL_ASSET_ID, duration_seconds: 540, episode_number: 3, status: "published", visibility: "free", created_at: now, updated_at: now },
+  { id: "learn-inquiry-1", series_id: "learn-inquiry", title: "Asking Without Answering", audio_asset_id: MOCK_BELL_ASSET_ID, duration_seconds: 480, episode_number: 1, status: "published", visibility: "free", created_at: now, updated_at: now },
+  { id: "learn-inquiry-2", series_id: "learn-inquiry", title: "Looking Past the Label", audio_asset_id: MOCK_BELL_ASSET_ID, duration_seconds: 540, episode_number: 2, status: "published", visibility: "free", created_at: now, updated_at: now },
+  { id: "learn-inquiry-3", series_id: "learn-inquiry", title: "Living with a Question", audio_asset_id: MOCK_BELL_ASSET_ID, duration_seconds: 600, episode_number: 3, status: "published", visibility: "free", created_at: now, updated_at: now },
 ];
 
 export const mockAudioTalks: AudioTalkRow[] = [
