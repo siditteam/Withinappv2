@@ -1,12 +1,13 @@
 import { DataTable, ValueBadge } from "@/components/DataTable";
 import { PageShell } from "@/components/PageShell";
-import { contentSource } from "@/lib/contentSource";
+import { getContentSource } from "@/lib/contentSource";
 import { formatDuration } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
 export default async function RoomsPage() {
-  const rooms = await contentSource.listCommonSpaceRooms();
+  const source = await getContentSource();
+  const rooms = await source.listCommonSpaceRooms();
 
   return (
     <PageShell

@@ -1,10 +1,11 @@
 import { PageShell, Note } from "@/components/PageShell";
-import { contentSource } from "@/lib/contentSource";
+import { getContentSource } from "@/lib/contentSource";
 
 // Admin pages always show current data rather than a build-time snapshot.
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
+  const source = await getContentSource();
   const [
     practices,
     silencePresets,
@@ -17,16 +18,16 @@ export default async function DashboardPage() {
     learnEpisodes,
     talks,
   ] = await Promise.all([
-    contentSource.listPracticeSessions(),
-    contentSource.listSilencePresets(),
-    contentSource.listInquiryCategories(),
-    contentSource.listInquiryCards(),
-    contentSource.listLibraryItems(),
-    contentSource.listQuotes(),
-    contentSource.listCommonSpaceRooms(),
-    contentSource.listLearnSeries(),
-    contentSource.listLearnEpisodes(),
-    contentSource.listAudioTalks(),
+    source.listPracticeSessions(),
+    source.listSilencePresets(),
+    source.listInquiryCategories(),
+    source.listInquiryCards(),
+    source.listLibraryItems(),
+    source.listQuotes(),
+    source.listCommonSpaceRooms(),
+    source.listLearnSeries(),
+    source.listLearnEpisodes(),
+    source.listAudioTalks(),
   ]);
 
   const stats = [
@@ -56,8 +57,9 @@ export default async function DashboardPage() {
         ))}
       </div>
       <Note>
-        Editing and draft visibility arrive with the admin auth phase — writes require an
-        authenticated session with an admin_roles row, which row-level security then trusts.
+        Signed-in admins see all content including drafts — row-level security trusts the
+        admin_roles table. Editing tools arrive in the next phase; this console is still
+        read-only.
       </Note>
     </PageShell>
   );

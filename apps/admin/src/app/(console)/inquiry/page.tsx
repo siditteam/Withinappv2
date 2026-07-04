@@ -1,13 +1,14 @@
 import { DataTable, ValueBadge } from "@/components/DataTable";
 import { PageShell } from "@/components/PageShell";
-import { contentSource } from "@/lib/contentSource";
+import { getContentSource } from "@/lib/contentSource";
 
 export const dynamic = "force-dynamic";
 
 export default async function InquiryPage() {
+  const source = await getContentSource();
   const [categories, cards] = await Promise.all([
-    contentSource.listInquiryCategories(),
-    contentSource.listInquiryCards(),
+    source.listInquiryCategories(),
+    source.listInquiryCards(),
   ]);
   const categoryTitles = Object.fromEntries(categories.map((category) => [category.id, category.title]));
 

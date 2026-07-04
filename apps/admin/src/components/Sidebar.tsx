@@ -1,10 +1,11 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { adminNavItems } from "@within/config";
 
-export function Sidebar() {
+export function Sidebar({ footer }: { footer?: ReactNode }) {
   const pathname = usePathname();
 
   return (
@@ -12,7 +13,7 @@ export function Sidebar() {
       <Link href="/" className="px-3 text-base font-semibold tracking-tight text-black dark:text-zinc-50">
         Within Admin
       </Link>
-      <nav className="mt-6">
+      <nav className="mt-6 flex-1">
         <ul className="flex flex-col gap-0.5">
           {adminNavItems.map((item) => {
             const active = pathname === item.href;
@@ -33,6 +34,7 @@ export function Sidebar() {
           })}
         </ul>
       </nav>
+      {footer ? <div className="mt-6 border-t border-zinc-200 pt-4 dark:border-zinc-800">{footer}</div> : null}
     </aside>
   );
 }

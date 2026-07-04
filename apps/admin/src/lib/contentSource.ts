@@ -1,5 +1,4 @@
 import {
-  createDbClient,
   mockAudioTalks,
   mockCommonSpaceRooms,
   mockInquiryCards,
@@ -23,10 +22,11 @@ import {
   type WithinDbClient,
 } from "@within/db";
 
-// Server-side, read-only content access for the admin console. Editing (and
-// seeing drafts) requires the admin auth phase: an authenticated session
-// whose user has an admin_roles row, which RLS then trusts. Until then this
-// console is an honest preview of what the apps can see.
+import { createSupabaseServerClient, supabaseConfigured } from "@/lib/supabase/server";
+
+// Server-side content access for the admin console. Against a live project
+// the client is bound to the caller's auth cookies, so RLS decides what an
+// admin sees (all statuses) versus anyone else (published only).
 export interface AdminContentSource {
   listPracticeSessions(): Promise<PracticeSessionRow[]>;
   listSilencePresets(): Promise<SilencePresetRow[]>;
@@ -114,18 +114,17 @@ class SupabaseContentSource implements AdminContentSource {
   }
 }
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+const mockContentSource = new MockContentSource();
 
-export const contentSource: AdminContentSource =
-  supabaseUrl && supabaseAnonKey
-    ? new SupabaseContentSource(
-        createDbClient(supabaseUrl, supabaseAnonKey, {
-          auth: { persistSession: false, autoRefreshToken: false },
-        }),
-      )
-    : new MockContentSource();
+// Per-request: the Supabase client carries the caller's session cookies, so
+// two requests must never share one.
+export async function getContentSource(): Promise<AdminContentSource> {
+  if (!supabaseConfigured) {
+    return mockContentSource;
+  }
+  return new SupabaseContentSource(await createSupabaseServerClient());
+}
 
 // True when running against mock content -- pages surface this so nobody
 // mistakes the preview data for a live project.
-export const usingMockContent = !(supabaseUrl && supabaseAnonKey);
+export const usingMockContent = !supabaseConfigured;

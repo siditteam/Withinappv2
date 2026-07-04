@@ -1,14 +1,15 @@
 import { DataTable, ValueBadge } from "@/components/DataTable";
 import { PageShell } from "@/components/PageShell";
-import { contentSource } from "@/lib/contentSource";
+import { getContentSource } from "@/lib/contentSource";
 import { formatDuration } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
 export default async function LearnPage() {
+  const source = await getContentSource();
   const [series, episodes] = await Promise.all([
-    contentSource.listLearnSeries(),
-    contentSource.listLearnEpisodes(),
+    source.listLearnSeries(),
+    source.listLearnEpisodes(),
   ]);
   const seriesTitles = Object.fromEntries(series.map((entry) => [entry.id, entry.title]));
 

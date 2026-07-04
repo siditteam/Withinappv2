@@ -1,11 +1,12 @@
 import { DataTable, ValueBadge } from "@/components/DataTable";
 import { PageShell } from "@/components/PageShell";
-import { contentSource } from "@/lib/contentSource";
+import { getContentSource } from "@/lib/contentSource";
 
 export const dynamic = "force-dynamic";
 
 export default async function LibraryPage() {
-  const [items, quotes] = await Promise.all([contentSource.listLibraryItems(), contentSource.listQuotes()]);
+  const source = await getContentSource();
+  const [items, quotes] = await Promise.all([source.listLibraryItems(), source.listQuotes()]);
 
   return (
     <PageShell title="Library" description="Reflection cards and quotes of the day.">
