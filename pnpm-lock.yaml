@@ -218,9 +218,15 @@ importers:
       '@within/config':
         specifier: workspace:*
         version: link:../../packages/config
+      '@within/db':
+        specifier: workspace:*
+        version: link:../../packages/db
       '@within/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@within/validation':
+        specifier: workspace:*
+        version: link:../../packages/validation
       next:
         specifier: 16.2.9
         version: 16.2.9(@babel/core@7.29.7)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)

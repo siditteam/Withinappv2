@@ -14,3 +14,4 @@ export function createDbClient(
 }
 
 export * from "./types";
+export * from "./mockContent";

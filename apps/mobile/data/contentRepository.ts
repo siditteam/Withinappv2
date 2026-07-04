@@ -1,18 +1,3 @@
-import type {
-  AudioTalkRow,
-  CommonSpaceRoomRow,
-  InquiryCardRow,
-  InquiryCategoryRow,
-  LearnEpisodeRow,
-  LearnSeriesRow,
-  LibraryItemRow,
-  MediaAssetRow,
-  PracticeSessionRow,
-  QuoteRow,
-  SilencePresetRow,
-  WithinDbClient,
-} from "@within/db";
-
 import {
   MOCK_BELL_ASSET_ID,
   mockAudioTalks,
@@ -25,7 +10,20 @@ import {
   mockPracticeSessions,
   mockQuotes,
   mockSilencePresets,
-} from "./mockData";
+  type AudioTalkRow,
+  type CommonSpaceRoomRow,
+  type InquiryCardRow,
+  type InquiryCategoryRow,
+  type LearnEpisodeRow,
+  type LearnSeriesRow,
+  type LibraryItemRow,
+  type MediaAssetRow,
+  type PracticeSessionRow,
+  type QuoteRow,
+  type SilencePresetRow,
+  type WithinDbClient,
+} from "@within/db";
+
 import { supabaseClient } from "./supabaseClient";
 
 // A plain URI string or a Metro `require()` asset id -- the subset of

@@ -9,13 +9,16 @@ import type {
   PracticeSessionRow,
   QuoteRow,
   SilencePresetRow,
-} from "@within/db";
+} from "./types";
 
-// The only audio asset bundled with the app so far -- a synthesized
-// placeholder tone, not a real recording. Every mock practice/talk points at
-// it through `audio_asset_id` so the audio engine has something real to
-// play. Swapping the mock adapter for Supabase later means this id maps to
-// real storage URLs instead, with no change to anything that reads it.
+// Mock content mirroring supabase/seed.sql, so apps can run without a
+// Supabase project. Temporary mock content is allowed only here and in the
+// seed file -- never hard-coded inside UI components.
+//
+// The one placeholder audio asset. Consumers map this id to something they
+// can actually play (the mobile app bundles a synthesized sample tone).
+// Swapping the mock adapter for Supabase means real storage URLs instead,
+// with no change to anything that reads it.
 export const MOCK_BELL_ASSET_ID = "media-sample-bell";
 
 const now = "2026-01-01T00:00:00.000Z";
